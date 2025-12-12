@@ -1,0 +1,301 @@
+# ============================================
+# GITIGNORE - Simulador Geopolítico
+# Backend (Python/FastAPI) + Frontend (React/Vite)
+# ============================================
+
+# ==================== PYTHON ====================
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+virtualenv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.env.local
+.env.*.local
+*.env
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ==================== NODE.JS ====================
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Compiled binary addons
+build/Release
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Yarn
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ==================== VITE ====================
+# Vite build output
+dist/
+dist-ssr/
+
+# Vite cache
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# ==================== REACT ====================
+# Production build
+build/
+
+# ==================== EDITORS / IDEs ====================
+# VSCode
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs (PyCharm, WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ==================== OS ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ==================== SECRETS & CONFIGS ====================
+# Environment variables con secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Archivos de configuración con API keys
+config.json
+secrets.json
+credentials.json
+
+# Claves SSH
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# ==================== DATABASES ====================
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# PostgreSQL
+*.dump
+*.sql
+
+# ==================== LOGS ====================
+logs/
+*.log
+
+# ==================== TEMPORARY ====================
+tmp/
+temp/
+*.tmp
+*.temp
+
+# ==================== PROJECT SPECIFIC ====================
+# Backend - Archivos temporales
+backend/*.log
+backend/temp/
+backend/tmp/
+
+# Frontend - Archivos temporales
+frontend/*.log
+frontend/temp/
+frontend/tmp/
+
+# Datos de prueba
+test_data/
+mock_data/
+
+# ==================== OPTIONAL ====================
+# Si usas Docker
+# docker-compose.override.yml
+# .dockerignore
+
+# Si usas Terraform
+# *.tfstate
+# *.tfstate.*
+# .terraform/
+
+# ==================== KEEP THESE ====================
+# Mantener carpetas vacías con .gitkeep
+!.gitkeep
