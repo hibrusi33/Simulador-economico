@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos Cyberpunk Minimalistas */
+@layer base {
+  * {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-black text-white font-mono;
+  }
+
+  /* Scrollbar personalizada */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-cyan-400/50 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-cyan-400/80;
+  }
+}
+
+/* Animaciones personalizadas */
+@layer utilities {
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+    }
+    to {
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    }
+  }
+
+  .cyber-border {
+    @apply border border-cyan-400/30 rounded-lg;
+  }
+
+  .cyber-card {
+    @apply bg-gray-900/50 border border-cyan-400/30 rounded-lg backdrop-blur-sm;
+  }
+
+  .cyber-input {
+    @apply bg-black/50 border border-cyan-400/50 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-400 transition-colors;
+  }
+
+  .cyber-button {
+    @apply bg-cyan-600 hover:bg-cyan-500 text-black font-bold py-2 px-4 rounded-lg transition-all shadow-lg hover:shadow-cyan-400/50;
+  }
+
+  .cyber-button-secondary {
+    @apply bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-lg;
+  }
+}
+
+/* Estilos globales adicionales */
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Selector de país destacado */
+.country-selected {
+  filter: brightness(1.5);
+}
+
+/* Loading spinner */
+.spinner {
+  border: 3px solid rgba(0, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid #00ffff;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
