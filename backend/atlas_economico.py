@@ -153,6 +153,106 @@ ATLAS_MUNDIAL = {
         "tierra_arable": 0.50,
         "acceso_maritimo": 0.88,
         "pib_inicial": 2200
+    },
+    "Italy": {
+        "nombre": "Italia",
+        "recursos_fosiles": 0.25,
+        "potencial_renovable": 0.60,
+        "tecnologia": 0.80,
+        "capital_humano": 0.82,
+        "tierra_arable": 0.45,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 2200
+    },
+    "Argentina": {
+        "nombre": "Argentina",
+        "recursos_fosiles": 0.55,
+        "potencial_renovable": 0.85,
+        "tecnologia": 0.60,
+        "capital_humano": 0.70,
+        "tierra_arable": 0.75,
+        "acceso_maritimo": 0.70,
+        "pib_inicial": 630
+    },
+    "Turkey": {
+        "nombre": "Turquía",
+        "recursos_fosiles": 0.35,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.65,
+        "capital_humano": 0.68,
+        "tierra_arable": 0.55,
+        "acceso_maritimo": 0.80,
+        "pib_inicial": 906
+    },
+    "Indonesia": {
+        "nombre": "Indonesia",
+        "recursos_fosiles": 0.60,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.55,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.50,
+        "acceso_maritimo": 0.95,
+        "pib_inicial": 1300
+    },
+    "Nigeria": {
+        "nombre": "Nigeria",
+        "recursos_fosiles": 0.80,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.40,
+        "capital_humano": 0.45,
+        "tierra_arable": 0.60,
+        "acceso_maritimo": 0.75,
+        "pib_inicial": 477
+    },
+    "Egypt": {
+        "nombre": "Egipto",
+        "recursos_fosiles": 0.50,
+        "potencial_renovable": 0.85,
+        "tecnologia": 0.50,
+        "capital_humano": 0.55,
+        "tierra_arable": 0.30,
+        "acceso_maritimo": 0.80,
+        "pib_inicial": 476
+    },
+    "Poland": {
+        "nombre": "Polonia",
+        "recursos_fosiles": 0.45,
+        "potencial_renovable": 0.55,
+        "tecnologia": 0.70,
+        "capital_humano": 0.75,
+        "tierra_arable": 0.55,
+        "acceso_maritimo": 0.60,
+        "pib_inicial": 688
+    },
+    "Thailand": {
+        "nombre": "Tailandia",
+        "recursos_fosiles": 0.35,
+        "potencial_renovable": 0.65,
+        "tecnologia": 0.60,
+        "capital_humano": 0.65,
+        "tierra_arable": 0.50,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 536
+    },
+    "Netherlands": {
+        "nombre": "Países Bajos",
+        "recursos_fosiles": 0.40,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.90,
+        "capital_humano": 0.92,
+        "tierra_arable": 0.40,
+        "acceso_maritimo": 0.95,
+        "pib_inicial": 1070
+    },
+    "SouthAfrica": {
+        "nombre": "Sudáfrica",
+        "recursos_fosiles": 0.75,
+        "potencial_renovable": 0.80,
+        "tecnologia": 0.55,
+        "capital_humano": 0.60,
+        "tierra_arable": 0.40,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 420
     }
 }
 

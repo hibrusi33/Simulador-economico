@@ -48,7 +48,17 @@ const GlobeSelector = ({
     'MEX': 'Mexico',
     'KOR': 'SouthKorea',
     'AUS': 'Australia',
-    'CAN': 'Canada'
+    'CAN': 'Canada',
+    'ITA': 'Italy',
+    'ARG': 'Argentina',
+    'TUR': 'Turkey',
+    'IDN': 'Indonesia',
+    'NGA': 'Nigeria',
+    'EGY': 'Egypt',
+    'POL': 'Poland',
+    'THA': 'Thailand',
+    'NLD': 'Netherlands',
+    'ZAF': 'SouthAfrica'
   };
 
   // Obtener código del país desde ISO
@@ -162,32 +172,36 @@ const GlobeSelector = ({
     <div className="relative w-full h-full bg-black">
       <Globe
         ref={globeEl}
-        
+
+        // Tamaño para centrar el globo
+        width={window.innerWidth * 0.66}
+        height={window.innerHeight}
+
         // Datos
         polygonsData={countries.features}
-        
+
         // Apariencia del globo
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
         backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
-        
+
         // Atmósfera cyberpunk
         atmosphereColor="#00ffff"
         atmosphereAltitude={0.15}
-        
+
         // Configuración de polígonos (países)
         polygonAltitude={getPolygonAltitude}
         polygonCapColor={getPolygonColor}
         polygonSideColor={() => 'rgba(0, 100, 150, 0.4)'}
         polygonStrokeColor={() => '#001122'}
         polygonLabel={getPolygonLabel}
-        
+
         // Animación suave entre meses
         polygonsTransitionDuration={1000}
-        
+
         // Interactividad
         onPolygonClick={handleCountryClick}
         onPolygonHover={setHoverD}
-        
+
         // Controles
         enablePointerInteraction={true}
       />
