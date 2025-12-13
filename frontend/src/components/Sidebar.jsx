@@ -82,8 +82,8 @@ const Sidebar = ({
           {(value * 100).toFixed(0)}%
         </span>
       </div>
-      <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden border border-cyan-400/20">
-        <div 
+      <div className="w-full rounded-full h-2 overflow-hidden border" style={{ backgroundColor: 'var(--color-bg-dark)', borderColor: 'var(--color-border)' }}>
+        <div
           className={`h-full transition-all duration-500 ${
             value >= 0.7 ? 'bg-gradient-to-r from-green-500 to-emerald-400' :
             value >= 0.4 ? 'bg-gradient-to-r from-yellow-500 to-orange-400' :
@@ -160,8 +160,8 @@ const Sidebar = ({
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-black/90 border border-cyan-400/50 rounded-lg p-3 backdrop-blur-sm">
-          <p className="text-cyan-400 font-bold mb-2">Mes {label}</p>
+        <div className="border rounded-lg p-3 backdrop-blur-sm" style={{ backgroundColor: 'rgba(15, 23, 42, 0.95)', borderColor: 'var(--color-primary)' }}>
+          <p className="font-bold mb-2" style={{ color: 'var(--color-primary)' }}>Mes {label}</p>
           {payload.map((entry, index) => (
             <p key={index} style={{ color: entry.color }} className="text-sm">
               {entry.name}: {typeof entry.value === 'number' ? entry.value.toFixed(2) : entry.value}
@@ -174,14 +174,14 @@ const Sidebar = ({
   };
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-y-auto">
-      
+    <div className="w-full h-full overflow-y-auto" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
+
       {/* Header */}
-      <div className="p-6 border-b border-cyan-400/30 bg-black/40 sticky top-0 z-10 backdrop-blur-sm">
-        <h1 className="text-3xl font-bold text-cyan-400 mb-2 tracking-wider">
+      <div className="p-6 border-b sticky top-0 z-10 backdrop-blur-sm" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg-card)' }}>
+        <h1 className="text-3xl font-bold mb-2 tracking-wider" style={{ color: 'var(--color-primary)' }}>
           SIMULADOR GEOPOLÍTICO
         </h1>
-        <p className="text-gray-400 text-sm">
+        <p className="text-sm" style={{ color: '#94a3b8' }}>
           {gamePhase === 'setup' ? '⚙️ Configuración' : `📊 Simulación - Mes ${currentMonth + 1}/50`}
         </p>
       </div>
@@ -191,12 +191,12 @@ const Sidebar = ({
         <div className="p-6 space-y-6">
           
           {/* Instrucciones */}
-          <div className="bg-cyan-500/10 border border-cyan-400/30 rounded-lg p-4 backdrop-blur-sm">
-            <h3 className="text-cyan-400 font-bold mb-2 flex items-center gap-2">
+          <div className="border rounded-lg p-4 backdrop-blur-sm" style={{ backgroundColor: 'rgba(96, 165, 250, 0.1)', borderColor: 'var(--color-border)' }}>
+            <h3 className="font-bold mb-2 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
               <span>📍</span>
               <span>INSTRUCCIONES</span>
             </h3>
-            <ol className="text-sm text-gray-300 space-y-1 list-decimal list-inside">
+            <ol className="text-sm space-y-1 list-decimal list-inside" style={{ color: 'var(--color-text)' }}>
               <li>Haz clic en países del globo para seleccionarlos</li>
               <li>Asigna una ideología a cada país</li>
               <li>Presiona "INICIAR SIMULACIÓN"</li>
@@ -208,10 +208,10 @@ const Sidebar = ({
           {Object.keys(selectedCountries).length === 0 && (
             <div className="text-center py-12">
               <div className="text-6xl mb-4 animate-pulse">🌍</div>
-              <p className="text-gray-400 text-lg font-semibold">
+              <p className="text-lg font-semibold" style={{ color: '#94a3b8' }}>
                 Selecciona un país en el globo
               </p>
-              <p className="text-gray-600 text-sm mt-2">
+              <p className="text-sm mt-2" style={{ color: '#64748b' }}>
                 Haz clic en cualquier país disponible
               </p>
             </div>
@@ -221,8 +221,8 @@ const Sidebar = ({
           {Object.keys(selectedCountries).length > 0 && (
             <div className="space-y-6">
               
-              <div className="bg-black/40 border border-cyan-400/20 rounded-lg p-4">
-                <h3 className="text-cyan-400 font-bold mb-3 flex items-center justify-between">
+              <div className="border rounded-lg p-4" style={{ backgroundColor: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}>
+                <h3 className="font-bold mb-3 flex items-center justify-between" style={{ color: 'var(--color-primary)' }}>
                   <span>PAÍSES CONFIGURADOS ({Object.keys(selectedCountries).length})</span>
                 </h3>
               </div>
@@ -232,9 +232,10 @@ const Sidebar = ({
                 const resources = countryResources[countryCode];
                 
                 return (
-                  <div 
+                  <div
                     key={countryCode}
-                    className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-cyan-400/20 rounded-lg p-5 backdrop-blur-sm"
+                    className="border rounded-lg p-5 backdrop-blur-sm"
+                    style={{ backgroundColor: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}
                   >
                     {/* Nombre del país */}
                     <div className="flex items-center justify-between mb-4">
@@ -255,8 +256,8 @@ const Sidebar = ({
 
                     {/* Panel de Recursos */}
                     {resources && (
-                      <div className="mb-4 bg-black/30 border border-cyan-400/10 rounded-lg p-4">
-                        <h4 className="text-cyan-400 font-bold text-sm mb-3 flex items-center gap-2">
+                      <div className="mb-4 border rounded-lg p-4" style={{ backgroundColor: 'rgba(15, 23, 42, 0.5)', borderColor: 'var(--color-border)' }}>
+                        <h4 className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
                           <span>📊</span>
                           <span>RECURSOS NACIONALES</span>
                         </h4>
@@ -302,10 +303,10 @@ const Sidebar = ({
                         </div>
                         
                         {/* PIB Inicial */}
-                        <div className="mt-3 pt-3 border-t border-cyan-400/20">
+                        <div className="mt-3 pt-3 border-t" style={{ borderColor: 'var(--color-border)' }}>
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-400 text-xs">💵 PIB Inicial</span>
-                            <span className="text-cyan-400 font-bold">${resources.pib_inicial}B</span>
+                            <span className="text-xs" style={{ color: '#94a3b8' }}>💵 PIB Inicial</span>
+                            <span className="font-bold" style={{ color: 'var(--color-primary)' }}>${resources.pib_inicial}B</span>
                           </div>
                         </div>
                       </div>
@@ -313,7 +314,7 @@ const Sidebar = ({
 
                     {/* Selector de Ideología */}
                     <div>
-                      <h4 className="text-cyan-400 font-bold text-sm mb-3 flex items-center gap-2">
+                      <h4 className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
                         <span>🎯</span>
                         <span>IDEOLOGÍA ASIGNADA</span>
                       </h4>
@@ -330,11 +331,12 @@ const Sidebar = ({
                               }}
                               className={`
                                 px-3 py-2 rounded-lg text-xs font-bold transition-all duration-200
-                                ${isSelected 
-                                  ? `bg-gradient-to-r ${ideo.color} text-white shadow-lg shadow-cyan-500/30 scale-105 border-2 border-cyan-400`
-                                  : 'bg-gray-800/50 text-gray-400 border border-gray-700 hover:bg-gray-700/50 hover:text-white'
+                                ${isSelected
+                                  ? `bg-gradient-to-r ${ideo.color} text-white shadow-lg scale-105 border-2`
+                                  : 'border hover:text-white'
                                 }
                               `}
+                              style={isSelected ? { borderColor: 'var(--color-primary)', boxShadow: '0 10px 15px -3px rgba(96, 165, 250, 0.3)' } : { backgroundColor: 'rgba(30, 41, 59, 0.5)', color: '#94a3b8', borderColor: 'var(--color-border)' }}
                             >
                               <div>{ideo.icon}</div>
                               <div className="text-[10px] mt-1">{ideo.id}</div>
@@ -351,7 +353,11 @@ const Sidebar = ({
               <button
                 onClick={onStartSimulation}
                 disabled={isSimulating}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-5 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:transform-none shadow-2xl shadow-cyan-500/50 border border-cyan-400/50"
+                className="w-full font-bold py-5 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:transform-none shadow-2xl border disabled:cursor-not-allowed"
+                style={isSimulating ?
+                  { backgroundColor: '#64748b', color: 'white', borderColor: '#64748b' } :
+                  { background: 'linear-gradient(to right, var(--color-primary), var(--color-secondary))', color: 'white', borderColor: 'var(--color-primary)', boxShadow: '0 25px 50px -12px rgba(96, 165, 250, 0.5)' }
+                }
               >
                 {isSimulating ? (
                   <span className="flex items-center justify-center gap-3">
@@ -378,21 +384,21 @@ const Sidebar = ({
         <div className="p-6 space-y-6">
           
           {/* Progreso Temporal */}
-          <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 rounded-lg p-5 backdrop-blur-sm">
+          <div className="border rounded-lg p-5 backdrop-blur-sm" style={{ background: 'linear-gradient(to right, rgba(96, 165, 250, 0.1), rgba(167, 139, 250, 0.1))', borderColor: 'var(--color-border)' }}>
             <div className="flex items-center justify-between mb-3">
               <div>
-                <div className="text-cyan-400 font-bold text-2xl">MES {currentMonth + 1}</div>
-                <div className="text-gray-400 text-sm">Año {Math.floor(currentMonth / 12) + 1}, Mes {(currentMonth % 12) + 1}</div>
+                <div className="font-bold text-2xl" style={{ color: 'var(--color-primary)' }}>MES {currentMonth + 1}</div>
+                <div className="text-sm" style={{ color: '#94a3b8' }}>Año {Math.floor(currentMonth / 12) + 1}, Mes {(currentMonth % 12) + 1}</div>
               </div>
               <div className="text-right">
                 <div className="text-white font-bold text-2xl">{Math.round((currentMonth + 1) / 50 * 100)}%</div>
-                <div className="text-gray-400 text-xs">Completado</div>
+                <div className="text-xs" style={{ color: '#94a3b8' }}>Completado</div>
               </div>
             </div>
-            <div className="w-full bg-gray-800 rounded-full h-4 overflow-hidden border border-cyan-400/30">
-              <div 
-                className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 h-full transition-all duration-1000 relative"
-                style={{ width: `${(currentMonth + 1) / 50 * 100}%` }}
+            <div className="w-full rounded-full h-4 overflow-hidden border" style={{ backgroundColor: 'var(--color-bg-dark)', borderColor: 'var(--color-border)' }}>
+              <div
+                className="h-full transition-all duration-1000 relative"
+                style={{ width: `${(currentMonth + 1) / 50 * 100}%`, background: 'linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-accent))' }}
               >
                 <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
               </div>
@@ -400,12 +406,13 @@ const Sidebar = ({
           </div>
 
           {/* Selector de país para detalle */}
-          <div className="bg-black/40 border border-cyan-400/20 rounded-lg p-4">
-            <h4 className="text-cyan-400 font-bold text-sm mb-3">📌 ANÁLISIS DETALLADO</h4>
+          <div className="border rounded-lg p-4" style={{ backgroundColor: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}>
+            <h4 className="font-bold text-sm mb-3" style={{ color: 'var(--color-primary)' }}>📌 ANÁLISIS DETALLADO</h4>
             <select
               value={selectedCountryForDetail || ''}
               onChange={(e) => onSelectCountryForDetail(e.target.value || null)}
-              className="w-full bg-gray-900 border border-cyan-400/30 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 transition-all"
+              className="w-full border rounded px-3 py-2 text-sm text-white focus:outline-none transition-all"
+              style={{ backgroundColor: 'var(--color-bg-dark)', borderColor: 'var(--color-border)' }}
             >
               <option value="">Comparativa Global (Todos)</option>
               {Object.keys(simulationData || {}).map(code => (
@@ -417,12 +424,12 @@ const Sidebar = ({
           </div>
 
           {/* Gráficas */}
-          <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-cyan-400/20 rounded-lg p-5 backdrop-blur-sm">
+          <div className="border rounded-lg p-5 backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}>
             
             {/* Gráfica Comparativa (sin país seleccionado) */}
             {!selectedCountryForDetail && (
               <div>
-                <h3 className="text-cyan-400 font-bold mb-4 flex items-center gap-2">
+                <h3 className="font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
                   <span>📈</span>
                   <span>COMPARATIVA MUNDIAL - PIB</span>
                 </h3>
@@ -451,7 +458,7 @@ const Sidebar = ({
                         type="monotone"
                         dataKey={countryCode}
                         name={simulationData[countryCode].nombre}
-                        stroke={countryColors[countryCode] || '#00ffff'}
+                        stroke={countryColors[countryCode] || '#60a5fa'}
                         strokeWidth={2}
                         dot={false}
                         activeDot={{ r: 6 }}
@@ -465,11 +472,11 @@ const Sidebar = ({
             {/* Gráfica Detallada (país seleccionado) */}
             {selectedCountryForDetail && simulationData[selectedCountryForDetail] && (
               <div>
-                <h3 className="text-cyan-400 font-bold mb-2 flex items-center gap-2">
+                <h3 className="font-bold mb-2 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
                   <span>📊</span>
                   <span>{simulationData[selectedCountryForDetail].nombre}</span>
                 </h3>
-                <p className="text-gray-400 text-xs mb-4">
+                <p className="text-xs mb-4" style={{ color: '#94a3b8' }}>
                   {simulationData[selectedCountryForDetail].ideologia}
                 </p>
                 
@@ -478,16 +485,16 @@ const Sidebar = ({
                   <AreaChart data={prepareDetailedData(selectedCountryForDetail)}>
                     <defs>
                       <linearGradient id="colorPIB" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#00ffff" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#00ffff" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#60a5fa" stopOpacity={0}/>
                       </linearGradient>
                       <linearGradient id="colorBienestar" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#34d399" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#34d399" stopOpacity={0}/>
                       </linearGradient>
                       <linearGradient id="colorLibertad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#a78bfa" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -503,27 +510,27 @@ const Sidebar = ({
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: '11px' }} />
-                    <Area 
-                      type="monotone" 
-                      dataKey="PIB" 
-                      stroke="#00ffff" 
-                      fillOpacity={1} 
+                    <Area
+                      type="monotone"
+                      dataKey="PIB"
+                      stroke="#60a5fa"
+                      fillOpacity={1}
                       fill="url(#colorPIB)"
                       name="PIB (Miles de Millones)"
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="Bienestar" 
-                      stroke="#22c55e" 
-                      fillOpacity={1} 
+                    <Area
+                      type="monotone"
+                      dataKey="Bienestar"
+                      stroke="#34d399"
+                      fillOpacity={1}
                       fill="url(#colorBienestar)"
                       name="Bienestar (0-100)"
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="Libertad" 
-                      stroke="#f59e0b" 
-                      fillOpacity={1} 
+                    <Area
+                      type="monotone"
+                      dataKey="Libertad"
+                      stroke="#a78bfa"
+                      fillOpacity={1}
                       fill="url(#colorLibertad)"
                       name="Libertad (0-100)"
                     />
@@ -534,20 +541,20 @@ const Sidebar = ({
                 <div className="grid grid-cols-3 gap-3 mt-5">
                   {simulationData[selectedCountryForDetail].proyeccion[currentMonth] && (
                     <>
-                      <div className="bg-cyan-500/10 border border-cyan-400/30 rounded p-3 text-center">
-                        <div className="text-cyan-400 text-xs mb-1">PIB</div>
+                      <div className="border rounded p-3 text-center" style={{ backgroundColor: 'rgba(96, 165, 250, 0.1)', borderColor: '#60a5fa' }}>
+                        <div className="text-xs mb-1" style={{ color: '#60a5fa' }}>PIB</div>
                         <div className="text-white font-bold text-lg">
                           ${simulationData[selectedCountryForDetail].proyeccion[currentMonth].PIB.toFixed(0)}B
                         </div>
                       </div>
-                      <div className="bg-green-500/10 border border-green-400/30 rounded p-3 text-center">
-                        <div className="text-green-400 text-xs mb-1">Bienestar</div>
+                      <div className="border rounded p-3 text-center" style={{ backgroundColor: 'rgba(52, 211, 153, 0.1)', borderColor: '#34d399' }}>
+                        <div className="text-xs mb-1" style={{ color: '#34d399' }}>Bienestar</div>
                         <div className="text-white font-bold text-lg">
                           {simulationData[selectedCountryForDetail].proyeccion[currentMonth].Bienestar.toFixed(0)}
                         </div>
                       </div>
-                      <div className="bg-orange-500/10 border border-orange-400/30 rounded p-3 text-center">
-                        <div className="text-orange-400 text-xs mb-1">Libertad</div>
+                      <div className="border rounded p-3 text-center" style={{ backgroundColor: 'rgba(167, 139, 250, 0.1)', borderColor: '#a78bfa' }}>
+                        <div className="text-xs mb-1" style={{ color: '#a78bfa' }}>Libertad</div>
                         <div className="text-white font-bold text-lg">
                           {simulationData[selectedCountryForDetail].proyeccion[currentMonth].Libertad.toFixed(0)}
                         </div>
@@ -561,10 +568,10 @@ const Sidebar = ({
 
           {/* Mensaje de fin de simulación */}
           {currentMonth === 49 && (
-            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400 rounded-lg p-6 text-center backdrop-blur-sm animate-pulse">
+            <div className="border rounded-lg p-6 text-center backdrop-blur-sm animate-pulse" style={{ background: 'linear-gradient(to right, rgba(52, 211, 153, 0.2), rgba(16, 185, 129, 0.2))', borderColor: '#34d399' }}>
               <div className="text-6xl mb-3">🎉</div>
-              <div className="text-green-400 font-bold text-2xl mb-2">SIMULACIÓN COMPLETADA</div>
-              <div className="text-gray-300 text-sm">Los 50 meses han finalizado exitosamente</div>
+              <div className="font-bold text-2xl mb-2" style={{ color: '#34d399' }}>SIMULACIÓN COMPLETADA</div>
+              <div className="text-sm" style={{ color: 'var(--color-text)' }}>Los 50 meses han finalizado exitosamente</div>
             </div>
           )}
         </div>
