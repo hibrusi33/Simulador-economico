@@ -168,7 +168,7 @@ function App() {
       <div className="w-full h-full flex flex-col lg:flex-row">
 
         {/* Sidebar - Componente separado */}
-        <div className="w-full lg:w-1/3 h-1/2 lg:h-full border-b lg:border-r" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="w-full lg:w-[450px] h-1/2 lg:h-full border-b lg:border-r flex-shrink-0" style={{ borderColor: 'var(--color-border)' }}>
           <Sidebar
             gamePhase={gamePhase}
             selectedCountries={selectedCountries}
@@ -183,7 +183,7 @@ function App() {
         </div>
 
         {/* Globo Derecha */}
-        <div className="w-full lg:w-2/3 h-1/2 lg:h-full relative">
+        <div className="w-full lg:flex-1 h-1/2 lg:h-full relative overflow-hidden">
           <GlobeSelector
             onSelectCountry={handleSelectCountry}
             currentMonthData={currentMonthData}
