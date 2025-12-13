@@ -89,37 +89,37 @@ const GlobeSelector = ({
   // Calcular color basado en Bienestar (verde = alto, rojo = bajo)
   const getPolygonColor = (d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
-    
-    // País seleccionado: borde cyan brillante
+
+    // País seleccionado: azul primario brillante
     if (selectedCountries.includes(countryCode)) {
-      return '#00ffff';
+      return '#60a5fa';
     }
 
     // Hover effect
     if (hoverD && d === hoverD) {
-      return '#00ccff';
+      return '#a78bfa';
     }
-    
+
     if (!countryCode || !currentMonthData[countryCode]) {
       // Países no simulados: gris oscuro
-      return 'rgba(50, 50, 70, 0.7)';
+      return '#1e293b';
     }
 
     const data = currentMonthData[countryCode];
     const bienestar = data.Bienestar || 50;
-    
-    // Interpolación de color: Rojo (0) -> Amarillo (50) -> Verde (100)
+
+    // Interpolación de color: Rojo suave -> Verde menta
     let color;
     if (bienestar < 50) {
-      // Rojo a Amarillo
+      // Rojo suave a Amarillo suave
       const t = bienestar / 50;
-      color = d3.interpolateRgb('#ff0000', '#ffff00')(t);
+      color = d3.interpolateRgb('#ef4444', '#fbbf24')(t);
     } else {
-      // Amarillo a Verde
+      // Amarillo suave a Verde menta
       const t = (bienestar - 50) / 50;
-      color = d3.interpolateRgb('#ffff00', '#00ff00')(t);
+      color = d3.interpolateRgb('#fbbf24', '#34d399')(t);
     }
-    
+
     return color;
   };
 
@@ -153,15 +153,15 @@ const GlobeSelector = ({
       ? (((data.PIB / data.pib_inicial) - 1) * 100).toFixed(1) 
       : 0;
     
-    return `<div style="color: white; background: rgba(0,0,0,0.9); padding: 10px; border-radius: 6px; font-family: monospace; border: 2px solid #00ffff;">
-      <div style="font-size: 14px; font-weight: bold; color: #00ffff; margin-bottom: 4px;">${countryName}</div>
-      <div style="font-size: 11px; color: #aaa; margin-bottom: 6px;">${data.ideologia || 'N/A'}</div>
+    return `<div style="color: #e2e8f0; background: #1e293b; padding: 10px; border-radius: 6px; font-family: monospace; border: 2px solid #60a5fa;">
+      <div style="font-size: 14px; font-weight: bold; color: #60a5fa; margin-bottom: 4px;">${countryName}</div>
+      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">${data.ideologia || 'N/A'}</div>
       <div style="font-size: 12px;">
-        <div style="color: #0ff;">PIB: $${data.PIB?.toFixed(0)} B (${pibChange > 0 ? '+' : ''}${pibChange}%)</div>
-        <div style="color: ${data.Bienestar > 60 ? '#0f0' : data.Bienestar > 40 ? '#ff0' : '#f00'};">
+        <div style="color: #60a5fa;">PIB: $${data.PIB?.toFixed(0)} B (${pibChange > 0 ? '+' : ''}${pibChange}%)</div>
+        <div style="color: ${data.Bienestar > 60 ? '#34d399' : data.Bienestar > 40 ? '#fbbf24' : '#ef4444'};">
           Bienestar: ${data.Bienestar?.toFixed(0)}/100
         </div>
-        <div style="color: ${data.Libertad > 60 ? '#0f0' : data.Libertad > 40 ? '#ff0' : '#f00'};">
+        <div style="color: ${data.Libertad > 60 ? '#34d399' : data.Libertad > 40 ? '#fbbf24' : '#ef4444'};">
           Libertad: ${data.Libertad?.toFixed(0)}/100
         </div>
       </div>
@@ -169,13 +169,9 @@ const GlobeSelector = ({
   };
 
   return (
-    <div className="relative w-full h-full bg-black">
+    <div className="relative w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
       <Globe
         ref={globeEl}
-
-        // Tamaño para centrar el globo
-        width={window.innerWidth * 0.66}
-        height={window.innerHeight}
 
         // Datos
         polygonsData={countries.features}
@@ -184,15 +180,15 @@ const GlobeSelector = ({
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
         backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
 
-        // Atmósfera cyberpunk
-        atmosphereColor="#00ffff"
+        // Atmósfera con nuevo color
+        atmosphereColor="#60a5fa"
         atmosphereAltitude={0.15}
 
         // Configuración de polígonos (países)
         polygonAltitude={getPolygonAltitude}
         polygonCapColor={getPolygonColor}
-        polygonSideColor={() => 'rgba(0, 100, 150, 0.4)'}
-        polygonStrokeColor={() => '#001122'}
+        polygonSideColor={() => 'rgba(96, 165, 250, 0.3)'}
+        polygonStrokeColor={() => '#1e293b'}
         polygonLabel={getPolygonLabel}
 
         // Animación suave entre meses
@@ -205,37 +201,37 @@ const GlobeSelector = ({
         // Controles
         enablePointerInteraction={true}
       />
-      
+
       {/* Leyenda de colores */}
-      <div className="absolute bottom-6 right-6 bg-black/80 border border-cyan-400 rounded-lg p-4 text-white font-mono text-sm backdrop-blur-sm">
-        <div className="font-bold text-cyan-400 mb-2">LEYENDA</div>
+      <div className="absolute bottom-6 right-6 rounded-lg p-4 font-mono text-sm backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}>
+        <div className="font-bold mb-2" style={{ color: 'var(--color-primary)' }}>LEYENDA</div>
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500"></div>
-            <span>Alto Bienestar (80-100)</span>
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#34d399' }}></div>
+            <span style={{ color: 'var(--color-text)' }}>Alto Bienestar</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-yellow-400"></div>
-            <span>Medio Bienestar (40-80)</span>
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
+            <span style={{ color: 'var(--color-text)' }}>Medio Bienestar</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-500"></div>
-            <span>Bajo Bienestar (0-40)</span>
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+            <span style={{ color: 'var(--color-text)' }}>Bajo Bienestar</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-cyan-400"></div>
-            <span>País Seleccionado</span>
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#60a5fa' }}></div>
+            <span style={{ color: 'var(--color-text)' }}>Seleccionado</span>
           </div>
         </div>
-        <div className="mt-3 pt-3 border-t border-cyan-400/30">
-          <div className="text-xs text-gray-400">Altura = PIB relativo</div>
+        <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--color-border)' }}>
+          <div className="text-xs" style={{ color: '#94a3b8' }}>Altura = PIB relativo</div>
         </div>
       </div>
 
       {/* Indicador de carga */}
       {countries.features.length === 0 && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/70">
-          <div className="text-cyan-400 font-mono text-xl animate-pulse">
+        <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(15, 23, 42, 0.7)' }}>
+          <div className="font-mono text-xl animate-pulse" style={{ color: 'var(--color-primary)' }}>
             CARGANDO MAPA DEL MUNDO...
           </div>
         </div>

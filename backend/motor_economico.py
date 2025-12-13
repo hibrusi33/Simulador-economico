@@ -13,20 +13,29 @@ class MotorEconomico:
     """
     Clase que conecta con Google Gemini para generar simulaciones económicas
     """
-    
+
     def __init__(self, api_key: str = None):
         """
         Inicializa la conexión con Gemini
-        
+
         Args:
             api_key: API key de Google Gemini (si no se proporciona, busca en variable de entorno)
         """
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
+        self.use_fallback = False
+
         if not self.api_key:
-            raise ValueError("API key de Gemini no proporcionada. Define GEMINI_API_KEY en el entorno.")
-        
-        genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+            print("⚠️ No se encontró GEMINI_API_KEY. Usando modo fallback.")
+            self.use_fallback = True
+            self.model = None
+        else:
+            try:
+                genai.configure(api_key=self.api_key)
+                self.model = genai.GenerativeModel('gemini-1.5-flash')
+            except Exception as e:
+                print(f"⚠️ Error al configurar Gemini: {e}. Usando modo fallback.")
+                self.use_fallback = True
+                self.model = None
     
     def proyectar_economia(self, pais_datos: Dict, ideologia: str, codigo_pais: str) -> List[Dict]:
         """
@@ -77,6 +86,10 @@ Devuelve un array JSON de exactamente 50 objetos, cada uno con:
 PIB inicial del país: {pais_datos.get('pib_inicial', 1000)} miles de millones USD
 
 RESPONDE ÚNICAMENTE CON EL JSON, SIN TEXTO ADICIONAL."""
+
+        # Si está en modo fallback, usar directamente la proyección sintética
+        if self.use_fallback or not self.model:
+            return self._generar_proyeccion_fallback(pais_datos, ideologia, codigo_pais)
 
         try:
             # Llamar a Gemini

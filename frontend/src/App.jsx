@@ -155,8 +155,8 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-black text-white font-mono overflow-hidden">
-      
+    <div className="w-screen h-screen font-mono overflow-hidden" style={{ backgroundColor: 'var(--color-bg-dark)', color: 'var(--color-text)' }}>
+
       {/* Mensaje de Error Global (si existe) */}
       {errorMessage && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 bg-red-500/90 border border-red-400 rounded-lg px-6 py-3 shadow-2xl animate-pulse">
@@ -166,9 +166,9 @@ function App() {
 
       {/* Layout Principal: Responsive */}
       <div className="w-full h-full flex flex-col lg:flex-row">
-        
+
         {/* Sidebar - Componente separado */}
-        <div className="w-full lg:w-1/3 h-1/2 lg:h-full border-b lg:border-r border-cyan-400/30">
+        <div className="w-full lg:w-1/3 h-1/2 lg:h-full border-b lg:border-r" style={{ borderColor: 'var(--color-border)' }}>
           <Sidebar
             gamePhase={gamePhase}
             selectedCountries={selectedCountries}
@@ -190,12 +190,12 @@ function App() {
             selectedCountries={Object.keys(selectedCountries)}
             isSimulationRunning={gamePhase === 'running'}
           />
-          
+
           {/* Overlay de título cuando está en setup */}
           {gamePhase === 'setup' && (
-            <div className="absolute top-6 left-6 bg-black/70 border border-cyan-400 rounded-lg p-4 backdrop-blur-sm">
-              <div className="text-cyan-400 font-bold text-sm">🌍 SELECCIONA PAÍSES</div>
-              <div className="text-gray-400 text-xs mt-1">Haz clic en el globo</div>
+            <div className="absolute top-6 left-6 rounded-lg p-4 backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}>
+              <div className="font-bold text-sm" style={{ color: 'var(--color-primary)' }}>🌍 SELECCIONA PAÍSES</div>
+              <div className="text-xs mt-1" style={{ color: 'var(--color-text)', opacity: 0.7 }}>Haz clic en el globo</div>
             </div>
           )}
 
@@ -204,14 +204,16 @@ function App() {
             <div className="absolute bottom-6 left-6 flex gap-3">
               <button
                 onClick={togglePause}
-                className="bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg"
+                className="font-bold py-3 px-6 rounded-lg transition-all shadow-lg"
+                style={{ backgroundColor: '#facc15', color: 'var(--color-bg-dark)' }}
               >
                 {simulationInterval.current ? '⏸️ PAUSAR' : '▶️ REANUDAR'}
               </button>
-              
+
               <button
                 onClick={resetSimulation}
-                className="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg"
+                className="font-bold py-3 px-6 rounded-lg transition-all shadow-lg"
+                style={{ backgroundColor: '#ef4444', color: 'white' }}
               >
                 🔄 REINICIAR
               </button>
