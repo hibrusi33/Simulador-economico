@@ -34,6 +34,7 @@ const GlobeSelector = ({
 
   // Mapeo de códigos ISO a códigos de backend
   const isoToBackendCode = {
+    // Originales
     'USA': 'USA',
     'CHN': 'China',
     'RUS': 'Russia',
@@ -58,7 +59,52 @@ const GlobeSelector = ({
     'POL': 'Poland',
     'THA': 'Thailand',
     'NLD': 'Netherlands',
-    'ZAF': 'SouthAfrica'
+    'ZAF': 'SouthAfrica',
+    // Europa
+    'NOR': 'Norway',
+    'SWE': 'Sweden',
+    'FIN': 'Finland',
+    'DNK': 'Denmark',
+    'BEL': 'Belgium',
+    'CHE': 'Switzerland',
+    'AUT': 'Austria',
+    'PRT': 'Portugal',
+    'GRC': 'Greece',
+    'CZE': 'Czech',
+    'ROU': 'Romania',
+    'HUN': 'Hungary',
+    'IRL': 'Ireland',
+    'UKR': 'Ukraine',
+    // Asia-Pacífico
+    'VNM': 'Vietnam',
+    'PHL': 'Philippines',
+    'MYS': 'Malaysia',
+    'SGP': 'Singapore',
+    'BGD': 'Bangladesh',
+    'PAK': 'Pakistan',
+    'NZL': 'NewZealand',
+    'TWN': 'Taiwan',
+    'HKG': 'HongKong',
+    'PRK': 'NorthKorea',
+    // América
+    'COL': 'Colombia',
+    'CHL': 'Chile',
+    'PER': 'Peru',
+    'VEN': 'Venezuela',
+    'ECU': 'Ecuador',
+    'CUB': 'Cuba',
+    // África
+    'KEN': 'Kenya',
+    'ETH': 'Ethiopia',
+    'GHA': 'Ghana',
+    'MAR': 'Morocco',
+    'DZA': 'Algeria',
+    // Medio Oriente
+    'IRN': 'Iran',
+    'ARE': 'UAE',
+    'ISR': 'Israel',
+    'QAT': 'Qatar',
+    'KWT': 'Kuwait'
   };
 
   // Obtener código del país desde ISO
