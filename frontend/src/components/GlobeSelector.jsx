@@ -169,7 +169,7 @@ const GlobeSelector = ({
   };
 
   return (
-    <div className="relative w-full h-full" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
+    <div className="relative w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
       <Globe
         ref={globeEl}
 
