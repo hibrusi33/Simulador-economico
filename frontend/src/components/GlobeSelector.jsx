@@ -178,7 +178,7 @@ const GlobeSelector = ({
   // Calcular altitud basada en PIB
   const getPolygonAltitude = (d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
-    
+
     if (!countryCode || !currentMonthData[countryCode]) {
       return 0.01;
     }
@@ -186,12 +186,19 @@ const GlobeSelector = ({
     const data = currentMonthData[countryCode];
     const pibActual = data.PIB || 1000;
     const pibInicial = data.pib_inicial || 1000;
-    
-    // Normalizar: PIB actual / PIB inicial
-    // Rango: 0.01 (muy bajo) a 0.15 (muy alto)
-    const ratio = pibActual / pibInicial;
-    const altitude = Math.max(0.01, Math.min(0.15, ratio * 0.05));
-    
+
+    // Altura base cuando PIB = PIB inicial
+    const alturaBase = 0.01;
+
+    // Calcular cambio relativo (diferencia porcentual desde PIB inicial)
+    const cambioRelativo = (pibActual - pibInicial) / pibInicial;
+
+    // Escalar el cambio para que sea visible: ±100% de cambio = ±0.10 de altura
+    const deltaAltura = cambioRelativo * 0.10;
+
+    // Altura final: base + cambio (limitado entre 0.001 y 0.20)
+    const altitude = Math.max(0.001, Math.min(0.20, alturaBase + deltaAltura));
+
     return altitude;
   };
 
@@ -199,21 +206,22 @@ const GlobeSelector = ({
   const getPolygonColor = (d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
-    // País seleccionado: azul primario brillante
-    if (selectedCountries.includes(countryCode)) {
-      return '#60a5fa';
-    }
-
-    // Hover effect
+    // Hover effect (tiene prioridad sobre todo)
     if (hoverD && d === hoverD) {
       return '#a78bfa';
     }
 
     if (!countryCode || !currentMonthData[countryCode]) {
-      // Países no simulados: gris oscuro
+      // Países no simulados:
+      // Si está seleccionado pero no tiene datos, mostrar azul
+      if (selectedCountries.includes(countryCode)) {
+        return '#60a5fa';
+      }
+      // Si no, gris oscuro
       return '#1e293b';
     }
 
+    // Si el país tiene datos de simulación, usar color basado en bienestar
     const data = currentMonthData[countryCode];
     const bienestar = data.Bienestar || 50;
 
