@@ -215,11 +215,6 @@ const GlobeSelector = ({
   const getPolygonColor = (d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
-    // Hover effect (tiene prioridad sobre todo)
-    if (hoverD && d === hoverD) {
-      return '#a78bfa';
-    }
-
     // Si el país tiene datos de simulación activa, SIEMPRE usar color basado en bienestar
     if (countryCode && currentMonthData[countryCode]) {
       const data = currentMonthData[countryCode];
@@ -237,6 +232,11 @@ const GlobeSelector = ({
       }
     }
 
+    // Hover effect SOLO si NO hay simulación activa
+    if (hoverD && d === hoverD) {
+      return '#a78bfa';
+    }
+
     // Si está seleccionado pero no tiene datos de simulación, mostrar azul
     if (countryCode && selectedCountries.includes(countryCode)) {
       return '#60a5fa';
@@ -244,6 +244,31 @@ const GlobeSelector = ({
 
     // Países no disponibles: gris oscuro
     return '#1e293b';
+  };
+
+  // Color de los lados del polígono - muestra si PIB sube (verde) o baja (rojo)
+  const getPolygonSideColor = (d) => {
+    const countryCode = getCountryCode(d.properties.ISO_A3);
+
+    if (!countryCode || !currentMonthData[countryCode]) {
+      return 'rgba(96, 165, 250, 0.3)'; // Azul translúcido por defecto
+    }
+
+    const data = currentMonthData[countryCode];
+    const pibActual = data.PIB || 1000;
+    const pibInicial = data.pib_inicial || 1000;
+    const cambioRelativo = (pibActual - pibInicial) / pibInicial;
+
+    if (cambioRelativo > 0.02) {
+      // PIB subiendo > 2%: Verde brillante
+      return 'rgba(52, 211, 153, 0.8)';
+    } else if (cambioRelativo < -0.02) {
+      // PIB bajando > 2%: Rojo brillante
+      return 'rgba(239, 68, 68, 0.8)';
+    } else {
+      // PIB estable ±2%: Amarillo suave
+      return 'rgba(251, 191, 36, 0.6)';
+    }
   };
 
   // Manejar clic en país
@@ -310,7 +335,7 @@ const GlobeSelector = ({
         // Configuración de polígonos (países)
         polygonAltitude={getPolygonAltitude}
         polygonCapColor={getPolygonColor}
-        polygonSideColor={() => 'rgba(96, 165, 250, 0.3)'}
+        polygonSideColor={getPolygonSideColor}
         polygonStrokeColor={() => '#1e293b'}
         polygonLabel={getPolygonLabel}
 
@@ -330,28 +355,45 @@ const GlobeSelector = ({
       />
 
       {/* Leyenda de colores */}
-      <div className="absolute bottom-6 right-6 rounded-lg p-4 font-mono text-sm backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}>
-        <div className="font-bold mb-2" style={{ color: 'var(--color-primary)' }}>LEYENDA</div>
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#34d399' }}></div>
-            <span style={{ color: 'var(--color-text)' }}>Alto Bienestar</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
-            <span style={{ color: 'var(--color-text)' }}>Medio Bienestar</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#ef4444' }}></div>
-            <span style={{ color: 'var(--color-text)' }}>Bajo Bienestar</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#60a5fa' }}></div>
-            <span style={{ color: 'var(--color-text)' }}>Seleccionado</span>
+      <div className="absolute bottom-6 right-6 rounded-lg p-4 font-mono text-xs backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}>
+        <div className="font-bold mb-2 text-sm" style={{ color: 'var(--color-primary)' }}>LEYENDA</div>
+
+        {/* Colores superiores = Bienestar */}
+        <div className="mb-2">
+          <div className="text-xs font-semibold mb-1" style={{ color: '#94a3b8' }}>Superficie:</div>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#34d399' }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>Alto Bienestar</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>Medio</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>Bajo</span>
+            </div>
           </div>
         </div>
-        <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--color-border)' }}>
-          <div className="text-xs" style={{ color: '#94a3b8' }}>Altura = PIB relativo</div>
+
+        {/* Bordes = PIB */}
+        <div className="pt-2" style={{ borderTop: '1px solid var(--color-border)' }}>
+          <div className="text-xs font-semibold mb-1" style={{ color: '#94a3b8' }}>Bordes (PIB):</div>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#34d399', opacity: 0.8 }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>↑ Subiendo</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24', opacity: 0.6 }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>≈ Estable</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444', opacity: 0.8 }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>↓ Bajando</span>
+            </div>
+          </div>
         </div>
       </div>
 
