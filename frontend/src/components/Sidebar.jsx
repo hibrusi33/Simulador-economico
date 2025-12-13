@@ -480,7 +480,7 @@ const Sidebar = ({
                   {simulationData[selectedCountryForDetail].ideologia}
                 </p>
                 
-                {/* Gráfica de Área */}
+                {/* Gráfica de Área con doble eje Y */}
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={prepareDetailedData(selectedCountryForDetail)}>
                     <defs>
@@ -498,19 +498,32 @@ const Sidebar = ({
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis 
-                      dataKey="mes" 
+                    <XAxis
+                      dataKey="mes"
                       stroke="#64748b"
                       style={{ fontSize: '12px' }}
                       label={{ value: 'Mes', position: 'insideBottom', offset: -5, fill: '#64748b' }}
                     />
-                    <YAxis 
-                      stroke="#64748b"
+                    {/* Eje izquierdo para PIB */}
+                    <YAxis
+                      yAxisId="left"
+                      stroke="#60a5fa"
                       style={{ fontSize: '12px' }}
+                      label={{ value: 'PIB (Miles M)', angle: -90, position: 'insideLeft', fill: '#60a5fa', style: { fontSize: '11px' } }}
+                    />
+                    {/* Eje derecho para Bienestar y Libertad */}
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      stroke="#34d399"
+                      style={{ fontSize: '12px' }}
+                      domain={[0, 100]}
+                      label={{ value: 'Índices (0-100)', angle: 90, position: 'insideRight', fill: '#34d399', style: { fontSize: '11px' } }}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend wrapperStyle={{ fontSize: '11px' }} />
                     <Area
+                      yAxisId="left"
                       type="monotone"
                       dataKey="PIB"
                       stroke="#60a5fa"
@@ -519,6 +532,7 @@ const Sidebar = ({
                       name="PIB (Miles de Millones)"
                     />
                     <Area
+                      yAxisId="right"
                       type="monotone"
                       dataKey="Bienestar"
                       stroke="#34d399"
@@ -527,6 +541,7 @@ const Sidebar = ({
                       name="Bienestar (0-100)"
                     />
                     <Area
+                      yAxisId="right"
                       type="monotone"
                       dataKey="Libertad"
                       stroke="#a78bfa"
