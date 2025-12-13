@@ -12,6 +12,7 @@ const GlobeSelector = ({
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: [] });
   const [hoverD, setHoverD] = useState();
+  const [, forceUpdate] = useState({});
 
   // Cargar datos GeoJSON de países
   useEffect(() => {
@@ -31,6 +32,13 @@ const GlobeSelector = ({
       controls.autoRotateSpeed = 0.5;
     }
   }, [isSimulationRunning]);
+
+  // Forzar actualización cuando cambian los datos del mes
+  useEffect(() => {
+    if (Object.keys(currentMonthData).length > 0) {
+      forceUpdate({});
+    }
+  }, [currentMonthData]);
 
   // Mapeo de códigos ISO a códigos de backend
   const isoToBackendCode = {
@@ -188,16 +196,17 @@ const GlobeSelector = ({
     const pibInicial = data.pib_inicial || 1000;
 
     // Altura base cuando PIB = PIB inicial
-    const alturaBase = 0.01;
+    const alturaBase = 0.02;
 
     // Calcular cambio relativo (diferencia porcentual desde PIB inicial)
     const cambioRelativo = (pibActual - pibInicial) / pibInicial;
 
-    // Escalar el cambio para que sea visible: ±100% de cambio = ±0.10 de altura
-    const deltaAltura = cambioRelativo * 0.10;
+    // MULTIPLICADOR ALTO: hace que los cambios sean MUY visibles
+    // ±10% PIB = ±0.05 altura, ±50% PIB = ±0.25 altura
+    const deltaAltura = cambioRelativo * 0.50;
 
-    // Altura final: base + cambio (limitado entre 0.001 y 0.20)
-    const altitude = Math.max(0.001, Math.min(0.20, alturaBase + deltaAltura));
+    // Altura final: base + cambio (limitado entre 0.001 y 0.35)
+    const altitude = Math.max(0.001, Math.min(0.35, alturaBase + deltaAltura));
 
     return altitude;
   };
@@ -211,33 +220,30 @@ const GlobeSelector = ({
       return '#a78bfa';
     }
 
-    if (!countryCode || !currentMonthData[countryCode]) {
-      // Países no simulados:
-      // Si está seleccionado pero no tiene datos, mostrar azul
-      if (selectedCountries.includes(countryCode)) {
-        return '#60a5fa';
+    // Si el país tiene datos de simulación activa, SIEMPRE usar color basado en bienestar
+    if (countryCode && currentMonthData[countryCode]) {
+      const data = currentMonthData[countryCode];
+      const bienestar = data.Bienestar || 50;
+
+      // Interpolación de color: Rojo suave -> Verde menta
+      if (bienestar < 50) {
+        // Rojo suave a Amarillo suave
+        const t = bienestar / 50;
+        return d3.interpolateRgb('#ef4444', '#fbbf24')(t);
+      } else {
+        // Amarillo suave a Verde menta
+        const t = (bienestar - 50) / 50;
+        return d3.interpolateRgb('#fbbf24', '#34d399')(t);
       }
-      // Si no, gris oscuro
-      return '#1e293b';
     }
 
-    // Si el país tiene datos de simulación, usar color basado en bienestar
-    const data = currentMonthData[countryCode];
-    const bienestar = data.Bienestar || 50;
-
-    // Interpolación de color: Rojo suave -> Verde menta
-    let color;
-    if (bienestar < 50) {
-      // Rojo suave a Amarillo suave
-      const t = bienestar / 50;
-      color = d3.interpolateRgb('#ef4444', '#fbbf24')(t);
-    } else {
-      // Amarillo suave a Verde menta
-      const t = (bienestar - 50) / 50;
-      color = d3.interpolateRgb('#fbbf24', '#34d399')(t);
+    // Si está seleccionado pero no tiene datos de simulación, mostrar azul
+    if (countryCode && selectedCountries.includes(countryCode)) {
+      return '#60a5fa';
     }
 
-    return color;
+    // Países no disponibles: gris oscuro
+    return '#1e293b';
   };
 
   // Manejar clic en país
