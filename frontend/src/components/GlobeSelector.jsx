@@ -11,8 +11,8 @@ const GlobeSelector = ({
 }) => {
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: [] });
+  const [polygonsData, setPolygonsData] = useState([]);
   const [hoverD, setHoverD] = useState();
-  const [, forceUpdate] = useState({});
 
   // Cargar datos GeoJSON de países
   useEffect(() => {
@@ -20,6 +20,7 @@ const GlobeSelector = ({
       .then(res => res.json())
       .then(data => {
         setCountries(data);
+        setPolygonsData(data.features);
       })
       .catch(err => console.error('Error cargando GeoJSON:', err));
   }, []);
@@ -33,12 +34,13 @@ const GlobeSelector = ({
     }
   }, [isSimulationRunning]);
 
-  // Forzar actualización cuando cambian los datos del mes
+  // CRÍTICO: Recrear polygonsData para forzar actualización de colores y alturas
   useEffect(() => {
-    if (Object.keys(currentMonthData).length > 0) {
-      forceUpdate({});
+    if (countries.features && countries.features.length > 0) {
+      // Crear una nueva referencia del array para que react-globe.gl detecte el cambio
+      setPolygonsData([...countries.features]);
     }
-  }, [currentMonthData]);
+  }, [currentMonthData, countries.features]);
 
   // Mapeo de códigos ISO a códigos de backend
   const isoToBackendCode = {
@@ -322,7 +324,7 @@ const GlobeSelector = ({
         ref={globeEl}
 
         // Datos
-        polygonsData={countries.features}
+        polygonsData={polygonsData}
 
         // Apariencia del globo
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
@@ -398,7 +400,7 @@ const GlobeSelector = ({
       </div>
 
       {/* Indicador de carga */}
-      {countries.features.length === 0 && (
+      {polygonsData.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(15, 23, 42, 0.7)' }}>
           <div className="font-mono text-xl animate-pulse" style={{ color: 'var(--color-primary)' }}>
             CARGANDO MAPA DEL MUNDO...
