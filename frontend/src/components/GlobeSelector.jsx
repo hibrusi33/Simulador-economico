@@ -34,328 +34,108 @@ const GlobeSelector = ({
     }
   }, [isSimulationRunning]);
 
-  // CRÍTICO: Recrear polygonsData para forzar actualización de colores y alturas
+  // Recrear polygonsData solo cuando hay cambios (optimizado)
   useEffect(() => {
     if (countries.features && countries.features.length > 0) {
-      // Crear una nueva referencia del array para que react-globe.gl detecte el cambio
       setPolygonsData([...countries.features]);
-
-      // Debug: verificar que los datos están llegando
-      const dataKeys = Object.keys(currentMonthData);
-      if (dataKeys.length > 0) {
-        console.log('🌍 Actualizando globo:', dataKeys.length, 'países con datos');
-        console.log('Ejemplo USA:', currentMonthData['USA']);
-      }
     }
   }, [currentMonthData, countries.features]);
 
 
-  // Mapeo de códigos ISO a códigos de backend
-  const isoToBackendCode = {
-    // Originales
-    'USA': 'USA',
-    'CHN': 'China',
-    'RUS': 'Russia',
-    'DEU': 'Germany',
-    'JPN': 'Japan',
-    'ESP': 'Spain',
-    'IND': 'India',
-    'BRA': 'Brazil',
-    'SAU': 'SaudiArabia',
-    'FRA': 'France',
-    'GBR': 'UK',
-    'MEX': 'Mexico',
-    'KOR': 'SouthKorea',
-    'AUS': 'Australia',
-    'CAN': 'Canada',
-    'ITA': 'Italy',
-    'ARG': 'Argentina',
-    'TUR': 'Turkey',
-    'IDN': 'Indonesia',
-    'NGA': 'Nigeria',
-    'EGY': 'Egypt',
-    'POL': 'Poland',
-    'THA': 'Thailand',
-    'NLD': 'Netherlands',
-    'ZAF': 'SouthAfrica',
-    // Europa
-    'NOR': 'Norway',
-    'SWE': 'Sweden',
-    'FIN': 'Finland',
-    'DNK': 'Denmark',
-    'BEL': 'Belgium',
-    'CHE': 'Switzerland',
-    'AUT': 'Austria',
-    'PRT': 'Portugal',
-    'GRC': 'Greece',
-    'CZE': 'Czech',
-    'ROU': 'Romania',
-    'HUN': 'Hungary',
-    'IRL': 'Ireland',
-    'UKR': 'Ukraine',
-    // Asia-Pacífico
-    'VNM': 'Vietnam',
-    'PHL': 'Philippines',
-    'MYS': 'Malaysia',
-    'SGP': 'Singapore',
-    'BGD': 'Bangladesh',
-    'PAK': 'Pakistan',
-    'NZL': 'NewZealand',
-    'TWN': 'Taiwan',
-    'HKG': 'HongKong',
-    'PRK': 'NorthKorea',
-    // América
-    'COL': 'Colombia',
-    'CHL': 'Chile',
-    'PER': 'Peru',
-    'VEN': 'Venezuela',
-    'ECU': 'Ecuador',
-    'CUB': 'Cuba',
-    // África
-    'KEN': 'Kenya',
-    'ETH': 'Ethiopia',
-    'GHA': 'Ghana',
-    'MAR': 'Morocco',
-    'DZA': 'Algeria',
-    // Medio Oriente
-    'IRN': 'Iran',
-    'ARE': 'UAE',
-    'ISR': 'Israel',
-    'QAT': 'Qatar',
-    'KWT': 'Kuwait',
-    'IRQ': 'Iraq',
-    'SYR': 'Syria',
-    'JOR': 'Jordan',
-    'LBN': 'Lebanon',
-    'OMN': 'Oman',
-    'YEM': 'Yemen',
-    'BHR': 'Bahrain',
-    // Europa adicional
-    'SRB': 'Serbia',
-    'HRV': 'Croatia',
-    'BGR': 'Bulgaria',
-    'SVK': 'Slovakia',
-    'SVN': 'Slovenia',
-    'LTU': 'Lithuania',
-    'LVA': 'Latvia',
-    'EST': 'Estonia',
-    'BLR': 'Belarus',
-    'ISL': 'Iceland',
-    'LUX': 'Luxembourg',
-    'CYP': 'Cyprus',
-    'MLT': 'Malta',
-    // Asia adicional
-    'MMR': 'Myanmar',
-    'KHM': 'Cambodia',
-    'LAO': 'Laos',
-    'NPL': 'Nepal',
-    'LKA': 'SriLanka',
-    'AFG': 'Afghanistan',
-    'KAZ': 'Kazakhstan',
-    'UZB': 'Uzbekistan',
-    'MNG': 'Mongolia',
-    // América adicional
-    'URY': 'Uruguay',
-    'PRY': 'Paraguay',
-    'BOL': 'Bolivia',
-    'CRI': 'CostaRica',
-    'PAN': 'Panama',
-    'GTM': 'Guatemala',
-    'DOM': 'DominicanRep',
-    // África adicional
-    'TZA': 'Tanzania',
-    'UGA': 'Uganda',
-    'CMR': 'Cameroon',
-    'CIV': 'IvoryCoast',
-    'SEN': 'Senegal',
-    'AGO': 'Angola',
-    'TUN': 'Tunisia',
-    'LBY': 'Libya',
-    'ZWE': 'Zimbabwe',
-    'MDG': 'Madagascar',
-    'MOZ': 'Mozambique',
-    'ZMB': 'Zambia',
-    'NAM': 'Namibia',
-    'BWA': 'Botswana',
-    'SDN': 'Sudan',
-    'SSD': 'SouthSudan',
-    'SOM': 'Somalia',
-    'COG': 'Congo',
-    'COD': 'DRC',
-    // Oceanía
-    'PNG': 'PapuaNewGuinea',
-    // Territorios especiales
-    'GRL': 'Greenland',
-    'ATA': 'Antarctica',
-    // Más Europa
-    'ALB': 'Albania',
-    'MKD': 'NorthMacedonia',
-    'BIH': 'Bosnia',
-    'MNE': 'Montenegro',
-    'MDA': 'Moldova',
-    'ARM': 'Armenia',
-    'GEO': 'Georgia',
-    'AZE': 'Azerbaijan',
-    // Más Asia
-    'TKM': 'Turkmenistan',
-    'KGZ': 'Kyrgyzstan',
-    'TJK': 'Tajikistan',
-    'TLS': 'TimorLeste',
-    'BRN': 'Brunei',
-    'MDV': 'Maldives',
-    'BTN': 'Bhutan',
-    // Más América
-    'BLZ': 'Belize',
-    'SLV': 'ElSalvador',
-    'HND': 'Honduras',
-    'NIC': 'Nicaragua',
-    'JAM': 'Jamaica',
-    'HTI': 'Haiti',
-    'TTO': 'TrinidadTobago',
-    'BHS': 'Bahamas',
-    'BRB': 'Barbados',
-    'GUY': 'Guyana',
-    'SUR': 'Suriname',
-    // Más África
-    'TCD': 'Chad',
-    'MLI': 'Mali',
-    'NER': 'Niger',
-    'BFA': 'BurkinaFaso',
-    'RWA': 'Rwanda',
-    'BDI': 'Burundi',
-    'ERI': 'Eritrea',
-    'LBR': 'Liberia',
-    'SLE': 'SierraLeone',
-    'GIN': 'Guinea',
-    'TGO': 'Togo',
-    'BEN': 'Benin',
-    'MRT': 'Mauritania',
-    'GMB': 'Gambia',
-    'GAB': 'Gabon',
-    'CAF': 'CAR',
-    'MWI': 'Malawi',
-    'LSO': 'Lesotho',
-    'SWZ': 'Eswatini',
-    'DJI': 'Djibouti',
-    'MUS': 'Mauritius',
-    // Más Oceanía
-    'FJI': 'Fiji',
-    'SLB': 'SolomonIslands',
-    'VUT': 'Vanuatu',
-    'WSM': 'Samoa',
-    'TON': 'Tonga'
-  };
+  // Mapeo de códigos ISO a códigos de backend - MEMOIZADO para evitar recreación
+  const isoToBackendCode = useMemo(() => ({
+    'USA': 'USA', 'CHN': 'China', 'RUS': 'Russia', 'DEU': 'Germany', 'JPN': 'Japan',
+    'ESP': 'Spain', 'IND': 'India', 'BRA': 'Brazil', 'SAU': 'SaudiArabia', 'FRA': 'France',
+    'GBR': 'UK', 'MEX': 'Mexico', 'KOR': 'SouthKorea', 'AUS': 'Australia', 'CAN': 'Canada',
+    'ITA': 'Italy', 'ARG': 'Argentina', 'TUR': 'Turkey', 'IDN': 'Indonesia', 'NGA': 'Nigeria',
+    'EGY': 'Egypt', 'POL': 'Poland', 'THA': 'Thailand', 'NLD': 'Netherlands', 'ZAF': 'SouthAfrica',
+    'NOR': 'Norway', 'SWE': 'Sweden', 'FIN': 'Finland', 'DNK': 'Denmark', 'BEL': 'Belgium',
+    'CHE': 'Switzerland', 'AUT': 'Austria', 'PRT': 'Portugal', 'GRC': 'Greece', 'CZE': 'Czech',
+    'ROU': 'Romania', 'HUN': 'Hungary', 'IRL': 'Ireland', 'UKR': 'Ukraine', 'VNM': 'Vietnam',
+    'PHL': 'Philippines', 'MYS': 'Malaysia', 'SGP': 'Singapore', 'BGD': 'Bangladesh', 'PAK': 'Pakistan',
+    'NZL': 'NewZealand', 'TWN': 'Taiwan', 'HKG': 'HongKong', 'PRK': 'NorthKorea', 'COL': 'Colombia',
+    'CHL': 'Chile', 'PER': 'Peru', 'VEN': 'Venezuela', 'ECU': 'Ecuador', 'CUB': 'Cuba',
+    'KEN': 'Kenya', 'ETH': 'Ethiopia', 'GHA': 'Ghana', 'MAR': 'Morocco', 'DZA': 'Algeria',
+    'IRN': 'Iran', 'ARE': 'UAE', 'ISR': 'Israel', 'QAT': 'Qatar', 'KWT': 'Kuwait',
+    'IRQ': 'Iraq', 'SYR': 'Syria', 'JOR': 'Jordan', 'LBN': 'Lebanon', 'OMN': 'Oman',
+    'YEM': 'Yemen', 'BHR': 'Bahrain', 'SRB': 'Serbia', 'HRV': 'Croatia', 'BGR': 'Bulgaria',
+    'SVK': 'Slovakia', 'SVN': 'Slovenia', 'LTU': 'Lithuania', 'LVA': 'Latvia', 'EST': 'Estonia',
+    'BLR': 'Belarus', 'ISL': 'Iceland', 'LUX': 'Luxembourg', 'CYP': 'Cyprus', 'MLT': 'Malta',
+    'MMR': 'Myanmar', 'KHM': 'Cambodia', 'LAO': 'Laos', 'NPL': 'Nepal', 'LKA': 'SriLanka',
+    'AFG': 'Afghanistan', 'KAZ': 'Kazakhstan', 'UZB': 'Uzbekistan', 'MNG': 'Mongolia', 'URY': 'Uruguay',
+    'PRY': 'Paraguay', 'BOL': 'Bolivia', 'CRI': 'CostaRica', 'PAN': 'Panama', 'GTM': 'Guatemala',
+    'DOM': 'DominicanRep', 'TZA': 'Tanzania', 'UGA': 'Uganda', 'CMR': 'Cameroon', 'CIV': 'IvoryCoast',
+    'SEN': 'Senegal', 'AGO': 'Angola', 'TUN': 'Tunisia', 'LBY': 'Libya', 'ZWE': 'Zimbabwe',
+    'MDG': 'Madagascar', 'MOZ': 'Mozambique', 'ZMB': 'Zambia', 'NAM': 'Namibia', 'BWA': 'Botswana',
+    'SDN': 'Sudan', 'SSD': 'SouthSudan', 'SOM': 'Somalia', 'COG': 'Congo', 'COD': 'DRC',
+    'PNG': 'PapuaNewGuinea', 'GRL': 'Greenland', 'ATA': 'Antarctica', 'ALB': 'Albania', 'MKD': 'NorthMacedonia',
+    'BIH': 'Bosnia', 'MNE': 'Montenegro', 'MDA': 'Moldova', 'ARM': 'Armenia', 'GEO': 'Georgia',
+    'AZE': 'Azerbaijan', 'TKM': 'Turkmenistan', 'KGZ': 'Kyrgyzstan', 'TJK': 'Tajikistan', 'TLS': 'TimorLeste',
+    'BRN': 'Brunei', 'MDV': 'Maldives', 'BTN': 'Bhutan', 'BLZ': 'Belize', 'SLV': 'ElSalvador',
+    'HND': 'Honduras', 'NIC': 'Nicaragua', 'JAM': 'Jamaica', 'HTI': 'Haiti', 'TTO': 'TrinidadTobago',
+    'BHS': 'Bahamas', 'BRB': 'Barbados', 'GUY': 'Guyana', 'SUR': 'Suriname', 'TCD': 'Chad',
+    'MLI': 'Mali', 'NER': 'Niger', 'BFA': 'BurkinaFaso', 'RWA': 'Rwanda', 'BDI': 'Burundi',
+    'ERI': 'Eritrea', 'LBR': 'Liberia', 'SLE': 'SierraLeone', 'GIN': 'Guinea', 'TGO': 'Togo',
+    'BEN': 'Benin', 'MRT': 'Mauritania', 'GMB': 'Gambia', 'GAB': 'Gabon', 'CAF': 'CAR',
+    'MWI': 'Malawi', 'LSO': 'Lesotho', 'SWZ': 'Eswatini', 'DJI': 'Djibouti', 'MUS': 'Mauritius',
+    'FJI': 'Fiji', 'SLB': 'SolomonIslands', 'VUT': 'Vanuatu', 'WSM': 'Samoa', 'TON': 'Tonga'
+  }), []);
 
-  // Obtener código del país desde ISO
+  // Obtener código del país desde ISO - MEMOIZADO
   const getCountryCode = useCallback((isoCode) => {
     return isoToBackendCode[isoCode] || null;
+  }, [isoToBackendCode]);
+
+  // Helper: Obtener color basado en cambio de PIB (optimizado con cache)
+  const getColorFromPIBChange = useCallback((cambioRelativo) => {
+    if (cambioRelativo < -0.20) return '#7f1d1d';
+    if (cambioRelativo < -0.05) {
+      const t = (cambioRelativo + 0.20) / 0.15;
+      return interpolateRgb('#7f1d1d', '#ef4444')(t);
+    }
+    if (cambioRelativo < 0.05) {
+      const t = (cambioRelativo + 0.05) / 0.10;
+      return interpolateRgb('#ef4444', '#fbbf24')(t);
+    }
+    if (cambioRelativo < 0.20) {
+      const t = (cambioRelativo - 0.05) / 0.15;
+      return interpolateRgb('#fbbf24', '#34d399')(t);
+    }
+    return '#10b981';
   }, []);
 
-  // Calcular altitud basada en PIB - MEMOIZADA
+  // Calcular altitud basada en PIB (optimizada)
   const getPolygonAltitude = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
-
-    if (!countryCode || !currentMonthData[countryCode]) {
-      return 0.01;
-    }
+    if (!countryCode || !currentMonthData[countryCode]) return 0.01;
 
     const data = currentMonthData[countryCode];
-    const pibActual = data.PIB || 1000;
-    const pibInicial = data.pib_inicial || 1000;
+    const cambioRelativo = ((data.PIB || 1000) - (data.pib_inicial || 1000)) / (data.pib_inicial || 1000);
+    const altitude = 0.02 + cambioRelativo * 0.50;
 
-    // Altura base cuando PIB = PIB inicial
-    const alturaBase = 0.02;
-
-    // Calcular cambio relativo (diferencia porcentual desde PIB inicial)
-    const cambioRelativo = (pibActual - pibInicial) / pibInicial;
-
-    // MULTIPLICADOR ALTO: hace que los cambios sean MUY visibles
-    // +50% PIB = +0.25 altura (sale del globo)
-    // -50% PIB = país al ras del globo (altura mínima)
-    const deltaAltura = cambioRelativo * 0.50;
-
-    // Altura final: SOLO POSITIVOS
-    // Límites: 0.01 (muy bajo) a +0.40 (muy alto)
-    const altitude = Math.max(0.01, Math.min(0.40, alturaBase + deltaAltura));
-
-    return altitude;
+    return Math.max(0.01, Math.min(0.40, altitude));
   }, [currentMonthData, getCountryCode]);
 
-  // Calcular color basado en cambio de PIB (verde = subiendo, rojo = bajando) - MEMOIZADA
+  // Color de superficie y bordes (mismo color, optimizado)
   const getPolygonColor = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
-    // Si el país tiene datos de simulación activa, usar color basado en PIB
+    // Simulación activa: color por PIB
     if (countryCode && currentMonthData[countryCode]) {
       const data = currentMonthData[countryCode];
-      const pibActual = data.PIB || 1000;
-      const pibInicial = data.pib_inicial || 1000;
-      const cambioRelativo = (pibActual - pibInicial) / pibInicial;
-
-      // Escala de colores basada en cambio de PIB:
-      // PIB cayendo mucho (< -20%): Rojo muy oscuro
-      if (cambioRelativo < -0.20) {
-        return '#7f1d1d'; // Rojo muy oscuro
-      }
-      // PIB cayendo (-20% a -5%): Rojo oscuro a rojo normal
-      else if (cambioRelativo < -0.05) {
-        const t = (cambioRelativo + 0.20) / 0.15; // 0 a 1
-        return interpolateRgb('#7f1d1d', '#ef4444')(t);
-      }
-      // PIB estable (-5% a +5%): Rojo a amarillo
-      else if (cambioRelativo < 0.05) {
-        const t = (cambioRelativo + 0.05) / 0.10; // 0 a 1
-        return interpolateRgb('#ef4444', '#fbbf24')(t);
-      }
-      // PIB subiendo (+5% a +20%): Amarillo a verde
-      else if (cambioRelativo < 0.20) {
-        const t = (cambioRelativo - 0.05) / 0.15; // 0 a 1
-        return interpolateRgb('#fbbf24', '#34d399')(t);
-      }
-      // PIB subiendo mucho (> +20%): Verde brillante
-      else {
-        return '#10b981'; // Verde brillante
-      }
+      const cambioRelativo = ((data.PIB || 1000) - (data.pib_inicial || 1000)) / (data.pib_inicial || 1000);
+      return getColorFromPIBChange(cambioRelativo);
     }
 
-    // Hover effect SOLO si NO hay simulación activa
-    if (hoverD && d === hoverD) {
-      return '#a78bfa';
-    }
+    // Hover (solo sin simulación)
+    if (hoverD && d === hoverD) return '#a78bfa';
 
-    // Si está seleccionado pero no tiene datos de simulación, mostrar azul
-    if (countryCode && selectedCountries.includes(countryCode)) {
-      return '#60a5fa';
-    }
+    // Seleccionado sin datos
+    if (countryCode && selectedCountries.includes(countryCode)) return '#60a5fa';
 
-    // Países no disponibles: gris oscuro
+    // País no disponible
     return '#1e293b';
-  }, [currentMonthData, hoverD, selectedCountries, getCountryCode]);
-
-  // Color de los lados del polígono - muestra si PIB sube (verde) o baja (rojo) - MEMOIZADA
-  const getPolygonSideColor = useCallback((d) => {
-    const countryCode = getCountryCode(d.properties.ISO_A3);
-
-    if (!countryCode || !currentMonthData[countryCode]) {
-      return 'rgba(96, 165, 250, 0.3)'; // Azul translúcido por defecto
-    }
-
-    const data = currentMonthData[countryCode];
-    const pibActual = data.PIB || 1000;
-    const pibInicial = data.pib_inicial || 1000;
-    const cambioRelativo = (pibActual - pibInicial) / pibInicial;
-
-    if (cambioRelativo > 0.02) {
-      // PIB subiendo > 2%: Verde brillante
-      return 'rgba(52, 211, 153, 0.8)';
-    } else if (cambioRelativo < -0.02) {
-      // PIB bajando > 2%: Rojo brillante
-      return 'rgba(239, 68, 68, 0.8)';
-    } else {
-      // PIB estable ±2%: Amarillo suave
-      return 'rgba(251, 191, 36, 0.6)';
-    }
-  }, [currentMonthData, getCountryCode]);
+  }, [currentMonthData, hoverD, selectedCountries, getCountryCode, getColorFromPIBChange]);
 
   // Manejar clic en país
   const handleCountryClick = (polygon) => {
@@ -370,11 +150,11 @@ const GlobeSelector = ({
     }
   };
 
-  // Label para países seleccionados
-  const getPolygonLabel = (d) => {
+  // Label para países (optimizado)
+  const getPolygonLabel = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
     const countryName = d.properties.ADMIN;
-    
+
     if (!countryCode || !currentMonthData[countryCode]) {
       return `<div style="color: white; background: rgba(0,0,0,0.8); padding: 8px; border-radius: 4px; font-family: monospace;">
         ${countryName}<br/>
@@ -383,10 +163,10 @@ const GlobeSelector = ({
     }
 
     const data = currentMonthData[countryCode];
-    const pibChange = data.pib_inicial 
-      ? (((data.PIB / data.pib_inicial) - 1) * 100).toFixed(1) 
+    const pibChange = data.pib_inicial
+      ? (((data.PIB / data.pib_inicial) - 1) * 100).toFixed(1)
       : 0;
-    
+
     return `<div style="color: #e2e8f0; background: #1e293b; padding: 10px; border-radius: 6px; font-family: monospace; border: 2px solid #60a5fa;">
       <div style="font-size: 14px; font-weight: bold; color: #60a5fa; margin-bottom: 4px;">${countryName}</div>
       <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">${data.ideologia || 'N/A'}</div>
@@ -400,7 +180,7 @@ const GlobeSelector = ({
         </div>
       </div>
     </div>`;
-  };
+  }, [currentMonthData, getCountryCode]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
@@ -421,12 +201,12 @@ const GlobeSelector = ({
         // Configuración de polígonos (países)
         polygonAltitude={getPolygonAltitude}
         polygonCapColor={getPolygonColor}
-        polygonSideColor={getPolygonSideColor}
+        polygonSideColor={getPolygonColor}
         polygonStrokeColor={() => '#1e293b'}
         polygonLabel={getPolygonLabel}
 
-        // Animación suave entre meses
-        polygonsTransitionDuration={1000}
+        // Animación suave entre meses (reducida para mejor rendimiento)
+        polygonsTransitionDuration={300}
 
         // Interactividad
         onPolygonClick={handleCountryClick}
