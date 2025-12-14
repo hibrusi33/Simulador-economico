@@ -1,5 +1,5 @@
 // GlobeSelector.jsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Globe from 'react-globe.gl';
 import * as d3 from 'd3-scale-chromatic';
 
@@ -39,8 +39,22 @@ const GlobeSelector = ({
     if (countries.features && countries.features.length > 0) {
       // Crear una nueva referencia del array para que react-globe.gl detecte el cambio
       setPolygonsData([...countries.features]);
+
+      // Debug: verificar que los datos están llegando
+      const dataKeys = Object.keys(currentMonthData);
+      if (dataKeys.length > 0) {
+        console.log('🌍 Actualizando globo:', dataKeys.length, 'países con datos');
+        console.log('Ejemplo USA:', currentMonthData['USA']);
+      }
     }
   }, [currentMonthData, countries.features]);
+
+  // Generar key único basado en currentMonthData para forzar re-render del Globe
+  const globeKey = useMemo(() => {
+    return Object.keys(currentMonthData).length > 0
+      ? `globe-${Date.now()}-${Object.keys(currentMonthData).length}`
+      : 'globe-initial';
+  }, [currentMonthData]);
 
   // Mapeo de códigos ISO a códigos de backend
   const isoToBackendCode = {
@@ -181,12 +195,12 @@ const GlobeSelector = ({
   };
 
   // Obtener código del país desde ISO
-  const getCountryCode = (isoCode) => {
+  const getCountryCode = useCallback((isoCode) => {
     return isoToBackendCode[isoCode] || null;
-  };
+  }, []);
 
-  // Calcular altitud basada en PIB
-  const getPolygonAltitude = (d) => {
+  // Calcular altitud basada en PIB - MEMOIZADA
+  const getPolygonAltitude = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
     if (!countryCode || !currentMonthData[countryCode]) {
@@ -211,10 +225,10 @@ const GlobeSelector = ({
     const altitude = Math.max(0.001, Math.min(0.35, alturaBase + deltaAltura));
 
     return altitude;
-  };
+  }, [currentMonthData, getCountryCode]);
 
-  // Calcular color basado en Bienestar (verde = alto, rojo = bajo)
-  const getPolygonColor = (d) => {
+  // Calcular color basado en Bienestar (verde = alto, rojo = bajo) - MEMOIZADA
+  const getPolygonColor = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
     // Si el país tiene datos de simulación activa, SIEMPRE usar color basado en bienestar
@@ -246,10 +260,10 @@ const GlobeSelector = ({
 
     // Países no disponibles: gris oscuro
     return '#1e293b';
-  };
+  }, [currentMonthData, hoverD, selectedCountries, getCountryCode]);
 
-  // Color de los lados del polígono - muestra si PIB sube (verde) o baja (rojo)
-  const getPolygonSideColor = (d) => {
+  // Color de los lados del polígono - muestra si PIB sube (verde) o baja (rojo) - MEMOIZADA
+  const getPolygonSideColor = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
     if (!countryCode || !currentMonthData[countryCode]) {
@@ -271,7 +285,7 @@ const GlobeSelector = ({
       // PIB estable ±2%: Amarillo suave
       return 'rgba(251, 191, 36, 0.6)';
     }
-  };
+  }, [currentMonthData, getCountryCode]);
 
   // Manejar clic en país
   const handleCountryClick = (polygon) => {
@@ -321,6 +335,7 @@ const GlobeSelector = ({
   return (
     <div className="relative w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
       <Globe
+        key={globeKey}
         ref={globeEl}
 
         // Datos
