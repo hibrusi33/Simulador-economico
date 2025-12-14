@@ -251,7 +251,7 @@ const GlobeSelector = ({
     return isoToBackendCode[isoCode] || null;
   }, []);
 
-  // Calcular altitud basada en PIB - MEMOIZADA (permite negativos)
+  // Calcular altitud basada en PIB - MEMOIZADA
   const getPolygonAltitude = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
@@ -263,51 +263,58 @@ const GlobeSelector = ({
     const pibActual = data.PIB || 1000;
     const pibInicial = data.pib_inicial || 1000;
 
-    // Altura base cuando PIB = PIB inicial (0 = nivel del mar)
-    const alturaBase = 0.0;
+    // Altura base cuando PIB = PIB inicial
+    const alturaBase = 0.02;
 
     // Calcular cambio relativo (diferencia porcentual desde PIB inicial)
     const cambioRelativo = (pibActual - pibInicial) / pibInicial;
 
     // MULTIPLICADOR ALTO: hace que los cambios sean MUY visibles
     // +50% PIB = +0.25 altura (sale del globo)
-    // -50% PIB = -0.25 altura (se hunde en el globo)
+    // -50% PIB = país al ras del globo (altura mínima)
     const deltaAltura = cambioRelativo * 0.50;
 
-    // Altura final: permite NEGATIVOS para hundirse
-    // Límites: -0.15 (hundido) a +0.35 (muy alto)
-    const altitude = Math.max(-0.15, Math.min(0.35, alturaBase + deltaAltura));
+    // Altura final: SOLO POSITIVOS
+    // Límites: 0.01 (muy bajo) a +0.40 (muy alto)
+    const altitude = Math.max(0.01, Math.min(0.40, alturaBase + deltaAltura));
 
     return altitude;
   }, [currentMonthData, getCountryCode]);
 
-  // Calcular color basado en Bienestar (verde = alto, rojo = bajo) - MEMOIZADA
+  // Calcular color basado en cambio de PIB (verde = subiendo, rojo = bajando) - MEMOIZADA
   const getPolygonColor = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
-    // Si el país tiene datos de simulación activa, SIEMPRE usar color basado en bienestar
+    // Si el país tiene datos de simulación activa, usar color basado en PIB
     if (countryCode && currentMonthData[countryCode]) {
       const data = currentMonthData[countryCode];
-      const bienestar = data.Bienestar || 50;
       const pibActual = data.PIB || 1000;
       const pibInicial = data.pib_inicial || 1000;
       const cambioRelativo = (pibActual - pibInicial) / pibInicial;
 
-      // Si el país está hundido (altitud negativa), hacer la superficie transparente
-      if (cambioRelativo < -0.2) {
-        // País hundido: superficie completamente transparente para que no se vea flotando
-        return 'rgba(0, 0, 0, 0)';
+      // Escala de colores basada en cambio de PIB:
+      // PIB cayendo mucho (< -20%): Rojo muy oscuro
+      if (cambioRelativo < -0.20) {
+        return '#7f1d1d'; // Rojo muy oscuro
       }
-
-      // Interpolación de color: Rojo suave -> Verde menta
-      if (bienestar < 50) {
-        // Rojo suave a Amarillo suave
-        const t = bienestar / 50;
+      // PIB cayendo (-20% a -5%): Rojo oscuro a rojo normal
+      else if (cambioRelativo < -0.05) {
+        const t = (cambioRelativo + 0.20) / 0.15; // 0 a 1
+        return interpolateRgb('#7f1d1d', '#ef4444')(t);
+      }
+      // PIB estable (-5% a +5%): Rojo a amarillo
+      else if (cambioRelativo < 0.05) {
+        const t = (cambioRelativo + 0.05) / 0.10; // 0 a 1
         return interpolateRgb('#ef4444', '#fbbf24')(t);
-      } else {
-        // Amarillo suave a Verde menta
-        const t = (bienestar - 50) / 50;
+      }
+      // PIB subiendo (+5% a +20%): Amarillo a verde
+      else if (cambioRelativo < 0.20) {
+        const t = (cambioRelativo - 0.05) / 0.15; // 0 a 1
         return interpolateRgb('#fbbf24', '#34d399')(t);
+      }
+      // PIB subiendo mucho (> +20%): Verde brillante
+      else {
+        return '#10b981'; // Verde brillante
       }
     }
 
@@ -337,11 +344,6 @@ const GlobeSelector = ({
     const pibActual = data.PIB || 1000;
     const pibInicial = data.pib_inicial || 1000;
     const cambioRelativo = (pibActual - pibInicial) / pibInicial;
-
-    // Si el país está muy hundido, hacer los lados casi invisibles
-    if (cambioRelativo < -0.2) {
-      return 'rgba(0, 0, 0, 0.1)'; // Casi completamente transparente
-    }
 
     if (cambioRelativo > 0.02) {
       // PIB subiendo > 2%: Verde brillante
@@ -442,40 +444,29 @@ const GlobeSelector = ({
       <div className="absolute bottom-6 right-6 rounded-lg p-4 font-mono text-xs backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}>
         <div className="font-bold mb-2 text-sm" style={{ color: 'var(--color-primary)' }}>LEYENDA</div>
 
-        {/* Colores superiores = Bienestar */}
+        {/* Colores = PIB */}
         <div className="mb-2">
-          <div className="text-xs font-semibold mb-1" style={{ color: '#94a3b8' }}>Superficie:</div>
+          <div className="text-xs font-semibold mb-1" style={{ color: '#94a3b8' }}>Color del país (cambio PIB):</div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>+20% o más</span>
+            </div>
+            <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: '#34d399' }}></div>
-              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>Alto Bienestar</span>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>+5% a +20%</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24' }}></div>
-              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>Medio</span>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>±5% (estable)</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
-              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>Bajo</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bordes = PIB */}
-        <div className="pt-2" style={{ borderTop: '1px solid var(--color-border)' }}>
-          <div className="text-xs font-semibold mb-1" style={{ color: '#94a3b8' }}>Bordes (PIB):</div>
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#34d399', opacity: 0.8 }}></div>
-              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>↑ Subiendo</span>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>-5% a -20%</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fbbf24', opacity: 0.6 }}></div>
-              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>≈ Estable</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444', opacity: 0.8 }}></div>
-              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>↓ Bajando</span>
+              <div className="w-3 h-3 rounded" style={{ backgroundColor: '#7f1d1d' }}></div>
+              <span style={{ color: 'var(--color-text)', fontSize: '11px' }}>-20% o menos</span>
             </div>
           </div>
         </div>
