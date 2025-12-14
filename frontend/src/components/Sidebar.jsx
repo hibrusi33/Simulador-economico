@@ -3,16 +3,66 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const IDEOLOGIES = [
-  { id: 'Capitalismo', icon: '💰', color: 'from-green-500 to-emerald-600' },
-  { id: 'Capitalismo Neoliberal', icon: '🏦', color: 'from-blue-500 to-cyan-600' },
-  { id: 'Comunismo', icon: '🚩', color: 'from-red-600 to-rose-700' },
-  { id: 'Socialismo', icon: '✊', color: 'from-red-400 to-pink-500' },
-  { id: 'Socialismo Democrático', icon: '🌹', color: 'from-pink-500 to-purple-600' },
-  { id: 'Teocracia', icon: '🕌', color: 'from-purple-600 to-indigo-700' },
-  { id: 'Autoritarismo', icon: '👁️', color: 'from-gray-700 to-gray-900' },
-  { id: 'Tecnocracia', icon: '⚙️', color: 'from-indigo-500 to-blue-600' },
-  { id: 'Anarcocapitalismo', icon: '⚡', color: 'from-yellow-500 to-orange-600' },
-  { id: 'Socialdemocracia', icon: '🤝', color: 'from-blue-400 to-indigo-500' }
+  {
+    id: 'Capitalismo',
+    icon: '💰',
+    color: 'from-green-500 to-emerald-600',
+    description: 'Economía de libre mercado con mínima intervención estatal. Prioriza crecimiento económico y libertad empresarial.'
+  },
+  {
+    id: 'Capitalismo Neoliberal',
+    icon: '🏦',
+    color: 'from-blue-500 to-cyan-600',
+    description: 'Libre mercado extremo con privatización masiva y desregulación. Máxima libertad económica, mínimo estado de bienestar.'
+  },
+  {
+    id: 'Comunismo',
+    icon: '🚩',
+    color: 'from-red-600 to-rose-700',
+    description: 'Economía planificada centralmente, propiedad colectiva de medios de producción. Control total del estado.'
+  },
+  {
+    id: 'Socialismo',
+    icon: '✊',
+    color: 'from-red-400 to-pink-500',
+    description: 'Estado controla sectores clave de la economía. Redistribución de riqueza y servicios públicos amplios.'
+  },
+  {
+    id: 'Socialismo Democrático',
+    icon: '🌹',
+    color: 'from-pink-500 to-purple-600',
+    description: 'Combina economía mixta con democracia plena. Estado de bienestar robusto con mercados regulados.'
+  },
+  {
+    id: 'Teocracia',
+    icon: '🕌',
+    color: 'from-purple-600 to-indigo-700',
+    description: 'Gobierno basado en principios religiosos. Economía y sociedad regidas por doctrina religiosa.'
+  },
+  {
+    id: 'Autoritarismo',
+    icon: '👁️',
+    color: 'from-gray-700 to-gray-900',
+    description: 'Poder concentrado en élite o líder. Control político estricto, economía dirigida según intereses del régimen.'
+  },
+  {
+    id: 'Tecnocracia',
+    icon: '⚙️',
+    color: 'from-indigo-500 to-blue-600',
+    description: 'Gobierno de expertos y científicos. Decisiones basadas en datos, eficiencia y optimización tecnológica.'
+  },
+  {
+    id: 'Anarcocapitalismo',
+    icon: '⚡',
+    color: 'from-yellow-500 to-orange-600',
+    description: 'Ausencia de estado, mercado completamente libre. Propiedad privada absoluta y contratos voluntarios.'
+  },
+  {
+    id: 'Socialdemocracia',
+    icon: '🤝',
+    color: 'from-blue-400 to-indigo-500',
+    description: 'Capitalismo regulado con fuerte protección social. Balance entre mercado libre y justicia social.'
+  }
 ];
 
 const Sidebar = ({ 
@@ -324,6 +374,7 @@ const Sidebar = ({
                           return (
                             <button
                               key={ideo.id}
+                              title={ideo.description}
                               onClick={() => {
                                 const newCountries = { ...selectedCountries };
                                 newCountries[countryCode] = ideo.id;

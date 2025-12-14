@@ -202,7 +202,7 @@ const GlobeSelector = ({
         polygonAltitude={getPolygonAltitude}
         polygonCapColor={getPolygonColor}
         polygonSideColor={getPolygonColor}
-        polygonStrokeColor={() => '#1e293b'}
+        polygonStrokeColor={isSimulationRunning ? () => 'rgba(0,0,0,0)' : () => '#4a5568'}
         polygonLabel={getPolygonLabel}
 
         // Animación suave entre meses (reducida para mejor rendimiento)
