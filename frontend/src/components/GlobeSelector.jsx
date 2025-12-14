@@ -186,6 +186,7 @@ const GlobeSelector = ({
     'PNG': 'PapuaNewGuinea',
     // Territorios especiales
     'GRL': 'Greenland',
+    'ATA': 'Antarctica',
     // Más Europa
     'ALB': 'Albania',
     'MKD': 'NorthMacedonia',

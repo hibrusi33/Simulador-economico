@@ -1762,6 +1762,17 @@ ATLAS_MUNDIAL = {
         "tierra_arable": 0.28,
         "acceso_maritimo": 1.0,
         "pib_inicial": 0.5
+    },
+    # Territorios especiales
+    "Antarctica": {
+        "nombre": "Antártida",
+        "recursos_fosiles": 0.95,  # Posiblemente muchos recursos sin explotar
+        "potencial_renovable": 0.50,  # Viento y energía geotérmica
+        "tecnologia": 0.85,  # Bases científicas avanzadas
+        "capital_humano": 0.95,  # Personal científico altamente calificado
+        "tierra_arable": 0.0,  # No hay tierra cultivable
+        "acceso_maritimo": 1.0,  # Completamente rodeada de océano
+        "pib_inicial": 5  # Actividad científica limitada
     }
 }
 

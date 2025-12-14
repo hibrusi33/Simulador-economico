@@ -155,39 +155,67 @@ RESPONDE ÚNICAMENTE CON EL JSON, SIN TEXTO ADICIONAL."""
         """
         Genera una proyección sintética en caso de error con Gemini
         """
+        import random
+
         pib_inicial = pais_datos.get('pib_inicial', 1000)
         proyeccion = []
-        
+
         # Factores según ideología
         if ideologia.lower() in ["capitalismo", "capitalism"]:
-            factor_crecimiento = 1.02
+            factor_crecimiento = 1.015  # Reducido de 1.02
             bienestar_base = 60
             libertad_base = 85
+            volatilidad_max = 0.08  # Mayor volatilidad
         elif ideologia.lower() in ["comunismo", "communism"]:
-            factor_crecimiento = 1.005
+            factor_crecimiento = 1.002  # Reducido de 1.005
             bienestar_base = 70
             libertad_base = 40
+            volatilidad_max = 0.06
         elif ideologia.lower() in ["teocracia", "theocracy"]:
-            factor_crecimiento = 1.01
+            factor_crecimiento = 1.005  # Reducido de 1.01
             bienestar_base = 55
             libertad_base = 35
-        else:
-            factor_crecimiento = 1.015
+            volatilidad_max = 0.07
+        else:  # Socialdemocracia
+            factor_crecimiento = 1.01  # Reducido de 1.015
             bienestar_base = 65
             libertad_base = 70
-        
+            volatilidad_max = 0.05
+
         pib_actual = pib_inicial
-        
+
+        # Sembrar random con código de país para resultados consistentes
+        random.seed(hash(codigo_pais))
+
         for mes in range(1, 51):
-            # Añadir volatilidad
-            volatilidad = (hash(codigo_pais + str(mes)) % 20 - 10) / 200
-            pib_actual *= (factor_crecimiento + volatilidad)
-            
+            # Volatilidad más agresiva con posibilidad de crisis
+            volatilidad_base = (hash(codigo_pais + str(mes)) % 200 - 100) / 1000  # -0.1 a +0.1
+
+            # 15% de probabilidad de crisis económica (caída fuerte)
+            if hash(codigo_pais + str(mes) + "crisis") % 100 < 15:
+                crisis = -0.05 - (hash(codigo_pais + str(mes)) % 50) / 1000  # -0.05 a -0.10
+            else:
+                crisis = 0
+
+            # 10% de probabilidad de boom económico
+            if hash(codigo_pais + str(mes) + "boom") % 100 < 10:
+                boom = 0.03 + (hash(codigo_pais + str(mes)) % 40) / 1000  # +0.03 a +0.07
+            else:
+                boom = 0
+
+            # Calcular cambio total
+            cambio_total = factor_crecimiento + volatilidad_base + crisis + boom
+            pib_actual *= max(0.85, cambio_total)  # Limitar caída máxima al 15% por mes
+
+            # Variación en bienestar y libertad
+            variacion_bienestar = (hash(codigo_pais + str(mes) + "bien") % 40 - 20)
+            variacion_libertad = (hash(codigo_pais + str(mes) + "lib") % 30 - 15)
+
             proyeccion.append({
                 "mes": mes,
                 "PIB": round(pib_actual, 2),
-                "Bienestar": max(0, min(100, bienestar_base + (hash(str(mes)) % 20 - 10))),
-                "Libertad": max(0, min(100, libertad_base + (hash(str(mes*2)) % 15 - 7)))
+                "Bienestar": max(0, min(100, bienestar_base + variacion_bienestar)),
+                "Libertad": max(0, min(100, libertad_base + variacion_libertad))
             })
-        
+
         return proyeccion
