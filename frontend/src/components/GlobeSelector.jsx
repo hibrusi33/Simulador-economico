@@ -185,7 +185,64 @@ const GlobeSelector = ({
     // Oceanía
     'PNG': 'PapuaNewGuinea',
     // Territorios especiales
-    'GRL': 'Greenland'
+    'GRL': 'Greenland',
+    // Más Europa
+    'ALB': 'Albania',
+    'MKD': 'NorthMacedonia',
+    'BIH': 'Bosnia',
+    'MNE': 'Montenegro',
+    'MDA': 'Moldova',
+    'ARM': 'Armenia',
+    'GEO': 'Georgia',
+    'AZE': 'Azerbaijan',
+    // Más Asia
+    'TKM': 'Turkmenistan',
+    'KGZ': 'Kyrgyzstan',
+    'TJK': 'Tajikistan',
+    'TLS': 'TimorLeste',
+    'BRN': 'Brunei',
+    'MDV': 'Maldives',
+    'BTN': 'Bhutan',
+    // Más América
+    'BLZ': 'Belize',
+    'SLV': 'ElSalvador',
+    'HND': 'Honduras',
+    'NIC': 'Nicaragua',
+    'JAM': 'Jamaica',
+    'HTI': 'Haiti',
+    'TTO': 'TrinidadTobago',
+    'BHS': 'Bahamas',
+    'BRB': 'Barbados',
+    'GUY': 'Guyana',
+    'SUR': 'Suriname',
+    // Más África
+    'TCD': 'Chad',
+    'MLI': 'Mali',
+    'NER': 'Niger',
+    'BFA': 'BurkinaFaso',
+    'RWA': 'Rwanda',
+    'BDI': 'Burundi',
+    'ERI': 'Eritrea',
+    'LBR': 'Liberia',
+    'SLE': 'SierraLeone',
+    'GIN': 'Guinea',
+    'TGO': 'Togo',
+    'BEN': 'Benin',
+    'MRT': 'Mauritania',
+    'GMB': 'Gambia',
+    'GAB': 'Gabon',
+    'CAF': 'CAR',
+    'MWI': 'Malawi',
+    'LSO': 'Lesotho',
+    'SWZ': 'Eswatini',
+    'DJI': 'Djibouti',
+    'MUS': 'Mauritius',
+    // Más Oceanía
+    'FJI': 'Fiji',
+    'SLB': 'SolomonIslands',
+    'VUT': 'Vanuatu',
+    'WSM': 'Samoa',
+    'TON': 'Tonga'
   };
 
   // Obtener código del país desde ISO

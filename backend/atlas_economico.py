@@ -1237,6 +1237,531 @@ ATLAS_MUNDIAL = {
         "tierra_arable": 0.45,
         "acceso_maritimo": 0.60,
         "pib_inicial": 61
+    },
+    # Europa adicional
+    "Albania": {
+        "nombre": "Albania",
+        "recursos_fosiles": 0.30,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.48,
+        "capital_humano": 0.55,
+        "tierra_arable": 0.42,
+        "acceso_maritimo": 0.75,
+        "pib_inicial": 18
+    },
+    "NorthMacedonia": {
+        "nombre": "Macedonia del Norte",
+        "recursos_fosiles": 0.28,
+        "potencial_renovable": 0.55,
+        "tecnologia": 0.50,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.48,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 14
+    },
+    "Bosnia": {
+        "nombre": "Bosnia-Herzegovina",
+        "recursos_fosiles": 0.35,
+        "potencial_renovable": 0.65,
+        "tecnologia": 0.48,
+        "capital_humano": 0.55,
+        "tierra_arable": 0.40,
+        "acceso_maritimo": 0.20,
+        "pib_inicial": 23
+    },
+    "Montenegro": {
+        "nombre": "Montenegro",
+        "recursos_fosiles": 0.25,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.52,
+        "capital_humano": 0.60,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 0.70,
+        "pib_inicial": 6
+    },
+    "Moldova": {
+        "nombre": "Moldavia",
+        "recursos_fosiles": 0.20,
+        "potencial_renovable": 0.45,
+        "tecnologia": 0.45,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.68,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 14
+    },
+    "Armenia": {
+        "nombre": "Armenia",
+        "recursos_fosiles": 0.25,
+        "potencial_renovable": 0.58,
+        "tecnologia": 0.55,
+        "capital_humano": 0.68,
+        "tierra_arable": 0.32,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 19
+    },
+    "Georgia": {
+        "nombre": "Georgia",
+        "recursos_fosiles": 0.30,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.52,
+        "capital_humano": 0.65,
+        "tierra_arable": 0.42,
+        "acceso_maritimo": 0.60,
+        "pib_inicial": 24
+    },
+    "Azerbaijan": {
+        "nombre": "Azerbaiyán",
+        "recursos_fosiles": 0.82,
+        "potencial_renovable": 0.55,
+        "tecnologia": 0.50,
+        "capital_humano": 0.62,
+        "tierra_arable": 0.48,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 78
+    },
+    # Asia adicional
+    "Turkmenistan": {
+        "nombre": "Turkmenistán",
+        "recursos_fosiles": 0.90,
+        "potencial_renovable": 0.48,
+        "tecnologia": 0.42,
+        "capital_humano": 0.55,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 57
+    },
+    "Kyrgyzstan": {
+        "nombre": "Kirguistán",
+        "recursos_fosiles": 0.35,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.40,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.32,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 11
+    },
+    "Tajikistan": {
+        "nombre": "Tayikistán",
+        "recursos_fosiles": 0.32,
+        "potencial_renovable": 0.72,
+        "tecnologia": 0.38,
+        "capital_humano": 0.52,
+        "tierra_arable": 0.28,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 11
+    },
+    "TimorLeste": {
+        "nombre": "Timor Oriental",
+        "recursos_fosiles": 0.65,
+        "potencial_renovable": 0.55,
+        "tecnologia": 0.25,
+        "capital_humano": 0.35,
+        "tierra_arable": 0.30,
+        "acceso_maritimo": 0.80,
+        "pib_inicial": 3
+    },
+    "Brunei": {
+        "nombre": "Brunéi",
+        "recursos_fosiles": 0.88,
+        "potencial_renovable": 0.45,
+        "tecnologia": 0.68,
+        "capital_humano": 0.75,
+        "tierra_arable": 0.15,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 15
+    },
+    "Maldives": {
+        "nombre": "Maldivas",
+        "recursos_fosiles": 0.05,
+        "potencial_renovable": 0.80,
+        "tecnologia": 0.48,
+        "capital_humano": 0.62,
+        "tierra_arable": 0.05,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 6
+    },
+    "Bhutan": {
+        "nombre": "Bután",
+        "recursos_fosiles": 0.15,
+        "potencial_renovable": 0.85,
+        "tecnologia": 0.42,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.20,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 3
+    },
+    # América adicional
+    "Belize": {
+        "nombre": "Belice",
+        "recursos_fosiles": 0.25,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.40,
+        "capital_humano": 0.55,
+        "tierra_arable": 0.42,
+        "acceso_maritimo": 0.90,
+        "pib_inicial": 3
+    },
+    "ElSalvador": {
+        "nombre": "El Salvador",
+        "recursos_fosiles": 0.20,
+        "potencial_renovable": 0.65,
+        "tecnologia": 0.45,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.55,
+        "acceso_maritimo": 0.70,
+        "pib_inicial": 32
+    },
+    "Honduras": {
+        "nombre": "Honduras",
+        "recursos_fosiles": 0.22,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.40,
+        "capital_humano": 0.50,
+        "tierra_arable": 0.48,
+        "acceso_maritimo": 0.75,
+        "pib_inicial": 32
+    },
+    "Nicaragua": {
+        "nombre": "Nicaragua",
+        "recursos_fosiles": 0.25,
+        "potencial_renovable": 0.72,
+        "tecnologia": 0.38,
+        "capital_humano": 0.52,
+        "tierra_arable": 0.52,
+        "acceso_maritimo": 0.80,
+        "pib_inicial": 15
+    },
+    "Jamaica": {
+        "nombre": "Jamaica",
+        "recursos_fosiles": 0.20,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.48,
+        "capital_humano": 0.62,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 17
+    },
+    "Haiti": {
+        "nombre": "Haití",
+        "recursos_fosiles": 0.10,
+        "potencial_renovable": 0.50,
+        "tecnologia": 0.25,
+        "capital_humano": 0.35,
+        "tierra_arable": 0.45,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 20
+    },
+    "TrinidadTobago": {
+        "nombre": "Trinidad y Tobago",
+        "recursos_fosiles": 0.75,
+        "potencial_renovable": 0.52,
+        "tecnologia": 0.55,
+        "capital_humano": 0.68,
+        "tierra_arable": 0.30,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 24
+    },
+    "Bahamas": {
+        "nombre": "Bahamas",
+        "recursos_fosiles": 0.15,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.58,
+        "capital_humano": 0.72,
+        "tierra_arable": 0.15,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 14
+    },
+    "Barbados": {
+        "nombre": "Barbados",
+        "recursos_fosiles": 0.12,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.60,
+        "capital_humano": 0.75,
+        "tierra_arable": 0.25,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 6
+    },
+    "Guyana": {
+        "nombre": "Guyana",
+        "recursos_fosiles": 0.80,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.38,
+        "capital_humano": 0.52,
+        "tierra_arable": 0.48,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 15
+    },
+    "Suriname": {
+        "nombre": "Surinam",
+        "recursos_fosiles": 0.68,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.42,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.38,
+        "acceso_maritimo": 0.80,
+        "pib_inicial": 4
+    },
+    # África adicional
+    "Chad": {
+        "nombre": "Chad",
+        "recursos_fosiles": 0.65,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.22,
+        "capital_humano": 0.28,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 12
+    },
+    "Mali": {
+        "nombre": "Mali",
+        "recursos_fosiles": 0.45,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.25,
+        "capital_humano": 0.32,
+        "tierra_arable": 0.42,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 19
+    },
+    "Niger": {
+        "nombre": "Níger",
+        "recursos_fosiles": 0.68,
+        "potencial_renovable": 0.78,
+        "tecnologia": 0.20,
+        "capital_humano": 0.28,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 16
+    },
+    "BurkinaFaso": {
+        "nombre": "Burkina Faso",
+        "recursos_fosiles": 0.42,
+        "potencial_renovable": 0.72,
+        "tecnologia": 0.25,
+        "capital_humano": 0.32,
+        "tierra_arable": 0.48,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 19
+    },
+    "Rwanda": {
+        "nombre": "Ruanda",
+        "recursos_fosiles": 0.25,
+        "potencial_renovable": 0.65,
+        "tecnologia": 0.42,
+        "capital_humano": 0.52,
+        "tierra_arable": 0.58,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 13
+    },
+    "Burundi": {
+        "nombre": "Burundi",
+        "recursos_fosiles": 0.22,
+        "potencial_renovable": 0.60,
+        "tecnologia": 0.20,
+        "capital_humano": 0.35,
+        "tierra_arable": 0.52,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 3
+    },
+    "Eritrea": {
+        "nombre": "Eritrea",
+        "recursos_fosiles": 0.35,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.25,
+        "capital_humano": 0.38,
+        "tierra_arable": 0.28,
+        "acceso_maritimo": 0.90,
+        "pib_inicial": 2
+    },
+    "Liberia": {
+        "nombre": "Liberia",
+        "recursos_fosiles": 0.45,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.25,
+        "capital_humano": 0.38,
+        "tierra_arable": 0.45,
+        "acceso_maritimo": 0.85,
+        "pib_inicial": 4
+    },
+    "SierraLeone": {
+        "nombre": "Sierra Leona",
+        "recursos_fosiles": 0.52,
+        "potencial_renovable": 0.72,
+        "tecnologia": 0.25,
+        "capital_humano": 0.35,
+        "tierra_arable": 0.48,
+        "acceso_maritimo": 0.90,
+        "pib_inicial": 4
+    },
+    "Guinea": {
+        "nombre": "Guinea",
+        "recursos_fosiles": 0.58,
+        "potencial_renovable": 0.78,
+        "tecnologia": 0.28,
+        "capital_humano": 0.38,
+        "tierra_arable": 0.52,
+        "acceso_maritimo": 0.80,
+        "pib_inicial": 19
+    },
+    "Togo": {
+        "nombre": "Togo",
+        "recursos_fosiles": 0.35,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.32,
+        "capital_humano": 0.42,
+        "tierra_arable": 0.55,
+        "acceso_maritimo": 0.75,
+        "pib_inicial": 8
+    },
+    "Benin": {
+        "nombre": "Benín",
+        "recursos_fosiles": 0.30,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.32,
+        "capital_humano": 0.42,
+        "tierra_arable": 0.58,
+        "acceso_maritimo": 0.70,
+        "pib_inicial": 18
+    },
+    "Mauritania": {
+        "nombre": "Mauritania",
+        "recursos_fosiles": 0.62,
+        "potencial_renovable": 0.80,
+        "tecnologia": 0.28,
+        "capital_humano": 0.38,
+        "tierra_arable": 0.22,
+        "acceso_maritimo": 0.90,
+        "pib_inicial": 10
+    },
+    "Gambia": {
+        "nombre": "Gambia",
+        "recursos_fosiles": 0.20,
+        "potencial_renovable": 0.65,
+        "tecnologia": 0.28,
+        "capital_humano": 0.38,
+        "tierra_arable": 0.52,
+        "acceso_maritimo": 0.75,
+        "pib_inicial": 2
+    },
+    "Gabon": {
+        "nombre": "Gabón",
+        "recursos_fosiles": 0.82,
+        "potencial_renovable": 0.85,
+        "tecnologia": 0.38,
+        "capital_humano": 0.52,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 0.90,
+        "pib_inicial": 20
+    },
+    "CAR": {
+        "nombre": "Rep. Centroafricana",
+        "recursos_fosiles": 0.55,
+        "potencial_renovable": 0.78,
+        "tecnologia": 0.18,
+        "capital_humano": 0.25,
+        "tierra_arable": 0.42,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 3
+    },
+    "Malawi": {
+        "nombre": "Malaui",
+        "recursos_fosiles": 0.28,
+        "potencial_renovable": 0.72,
+        "tecnologia": 0.25,
+        "capital_humano": 0.38,
+        "tierra_arable": 0.58,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 13
+    },
+    "Lesotho": {
+        "nombre": "Lesoto",
+        "recursos_fosiles": 0.15,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.32,
+        "capital_humano": 0.48,
+        "tierra_arable": 0.30,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 3
+    },
+    "Eswatini": {
+        "nombre": "Esuatini",
+        "recursos_fosiles": 0.22,
+        "potencial_renovable": 0.58,
+        "tecnologia": 0.38,
+        "capital_humano": 0.48,
+        "tierra_arable": 0.45,
+        "acceso_maritimo": 0.0,
+        "pib_inicial": 5
+    },
+    "Djibouti": {
+        "nombre": "Yibuti",
+        "recursos_fosiles": 0.15,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.35,
+        "capital_humano": 0.42,
+        "tierra_arable": 0.10,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 4
+    },
+    "Mauritius": {
+        "nombre": "Mauricio",
+        "recursos_fosiles": 0.10,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.58,
+        "capital_humano": 0.72,
+        "tierra_arable": 0.42,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 15
+    },
+    # Oceanía adicional
+    "Fiji": {
+        "nombre": "Fiyi",
+        "recursos_fosiles": 0.15,
+        "potencial_renovable": 0.78,
+        "tecnologia": 0.45,
+        "capital_humano": 0.62,
+        "tierra_arable": 0.35,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 5
+    },
+    "SolomonIslands": {
+        "nombre": "Islas Salomón",
+        "recursos_fosiles": 0.20,
+        "potencial_renovable": 0.75,
+        "tecnologia": 0.32,
+        "capital_humano": 0.45,
+        "tierra_arable": 0.30,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 2
+    },
+    "Vanuatu": {
+        "nombre": "Vanuatu",
+        "recursos_fosiles": 0.12,
+        "potencial_renovable": 0.72,
+        "tecnologia": 0.35,
+        "capital_humano": 0.48,
+        "tierra_arable": 0.28,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 1
+    },
+    "Samoa": {
+        "nombre": "Samoa",
+        "recursos_fosiles": 0.10,
+        "potencial_renovable": 0.70,
+        "tecnologia": 0.38,
+        "capital_humano": 0.58,
+        "tierra_arable": 0.32,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 1
+    },
+    "Tonga": {
+        "nombre": "Tonga",
+        "recursos_fosiles": 0.08,
+        "potencial_renovable": 0.68,
+        "tecnologia": 0.35,
+        "capital_humano": 0.55,
+        "tierra_arable": 0.28,
+        "acceso_maritimo": 1.0,
+        "pib_inicial": 0.5
     }
 }
 

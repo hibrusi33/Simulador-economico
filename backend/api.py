@@ -98,6 +98,18 @@ def obtener_datos_pais(codigo_pais: str):
     }
 
 
+@app.get("/paises")
+async def obtener_lista_paises():
+    """
+    Devuelve la lista de todos los códigos de países disponibles en el atlas
+
+    Returns:
+        Lista de códigos de países (ej: ["USA", "China", "Spain", ...])
+    """
+    from atlas_economico import listar_paises
+    return listar_paises()
+
+
 @app.post("/simular_mundo")
 async def simular_mundo(config: ConfiguracionSimulacion):
     """

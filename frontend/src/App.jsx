@@ -51,13 +51,33 @@ function App() {
     setErrorMessage('');
 
     try {
+      // Primero obtener lista de todos los países disponibles
+      const paisesResponse = await fetch('http://localhost:8000/paises');
+      const todosLosPaises = await paisesResponse.json();
+
+      // Ideologías disponibles para asignar aleatoriamente
+      const ideologias = ['comunismo', 'capitalismo', 'socialdemocracia'];
+
+      // Crear configuración completa: países seleccionados + países no seleccionados con ideología aleatoria
+      const configuracionCompleta = { ...selectedCountries };
+
+      todosLosPaises.forEach(codigoPais => {
+        if (!configuracionCompleta[codigoPais]) {
+          // Asignar ideología aleatoria a países no seleccionados
+          const ideologiaAleatoria = ideologias[Math.floor(Math.random() * ideologias.length)];
+          configuracionCompleta[codigoPais] = ideologiaAleatoria;
+        }
+      });
+
+      console.log(`🌍 Simulando ${Object.keys(configuracionCompleta).length} países (${Object.keys(selectedCountries).length} seleccionados + ${todosLosPaises.length - Object.keys(selectedCountries).length} aleatorios)`);
+
       const response = await fetch('http://localhost:8000/simular_mundo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          configuracion: selectedCountries
+          configuracion: configuracionCompleta
         })
       });
 
