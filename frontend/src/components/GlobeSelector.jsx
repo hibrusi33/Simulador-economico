@@ -289,6 +289,15 @@ const GlobeSelector = ({
     if (countryCode && currentMonthData[countryCode]) {
       const data = currentMonthData[countryCode];
       const bienestar = data.Bienestar || 50;
+      const pibActual = data.PIB || 1000;
+      const pibInicial = data.pib_inicial || 1000;
+      const cambioRelativo = (pibActual - pibInicial) / pibInicial;
+
+      // Si el país está hundido (altitud negativa), hacer la superficie transparente
+      if (cambioRelativo < -0.2) {
+        // País hundido: superficie completamente transparente para que no se vea flotando
+        return 'rgba(0, 0, 0, 0)';
+      }
 
       // Interpolación de color: Rojo suave -> Verde menta
       if (bienestar < 50) {
@@ -328,6 +337,11 @@ const GlobeSelector = ({
     const pibActual = data.PIB || 1000;
     const pibInicial = data.pib_inicial || 1000;
     const cambioRelativo = (pibActual - pibInicial) / pibInicial;
+
+    // Si el país está muy hundido, hacer los lados casi invisibles
+    if (cambioRelativo < -0.2) {
+      return 'rgba(0, 0, 0, 0.1)'; // Casi completamente transparente
+    }
 
     if (cambioRelativo > 0.02) {
       // PIB subiendo > 2%: Verde brillante
