@@ -65,19 +65,22 @@ const IDEOLOGIES = [
   }
 ];
 
-const Sidebar = ({ 
-  gamePhase, 
-  selectedCountries, 
-  onIdeologyChange, 
-  onStartSimulation, 
+const Sidebar = ({
+  gamePhase,
+  selectedCountries,
+  onIdeologyChange,
+  onStartSimulation,
   isSimulating,
   simulationData,
   currentMonth,
   selectedCountryForDetail = null,
-  onSelectCountryForDetail
+  onSelectCountryForDetail,
+  onCompleteSimulation
 }) => {
   const [countryResources, setCountryResources] = useState({});
   const [loadingResources, setLoadingResources] = useState(false);
+  const [hoveredIdeology, setHoveredIdeology] = useState(null);
+  const [showFinalSummary, setShowFinalSummary] = useState(false);
 
   // Cargar recursos de países seleccionados
   useEffect(() => {
@@ -105,6 +108,13 @@ const Sidebar = ({
 
     fetchResources();
   }, [selectedCountries]);
+
+  // Mostrar resumen final cuando termina la simulación
+  useEffect(() => {
+    if (gamePhase === 'running' && currentMonth === 49 && simulationData) {
+      setShowFinalSummary(true);
+    }
+  }, [gamePhase, currentMonth, simulationData]);
 
   // Obtener color según el valor del recurso
   const getResourceColor = (value) => {
@@ -363,7 +373,7 @@ const Sidebar = ({
                     )}
 
                     {/* Selector de Ideología */}
-                    <div>
+                    <div className="relative">
                       <h4 className="font-bold text-sm mb-3 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
                         <span>🎯</span>
                         <span>IDEOLOGÍA ASIGNADA</span>
@@ -372,26 +382,35 @@ const Sidebar = ({
                         {IDEOLOGIES.map((ideo) => {
                           const isSelected = ideology === ideo.id;
                           return (
-                            <button
-                              key={ideo.id}
-                              title={ideo.description}
-                              onClick={() => {
-                                const newCountries = { ...selectedCountries };
-                                newCountries[countryCode] = ideo.id;
-                                onIdeologyChange(newCountries);
-                              }}
-                              className={`
-                                px-3 py-2 rounded-lg text-xs font-bold transition-all duration-200
-                                ${isSelected
-                                  ? `bg-gradient-to-r ${ideo.color} text-white shadow-lg scale-105 border-2`
-                                  : 'border hover:text-white'
-                                }
-                              `}
-                              style={isSelected ? { borderColor: 'var(--color-primary)', boxShadow: '0 10px 15px -3px rgba(96, 165, 250, 0.3)' } : { backgroundColor: 'rgba(30, 41, 59, 0.5)', color: '#94a3b8', borderColor: 'var(--color-border)' }}
-                            >
-                              <div>{ideo.icon}</div>
-                              <div className="text-[10px] mt-1">{ideo.id}</div>
-                            </button>
+                            <div key={ideo.id} className="relative">
+                              <button
+                                onMouseEnter={() => setHoveredIdeology(ideo.id)}
+                                onMouseLeave={() => setHoveredIdeology(null)}
+                                onClick={() => {
+                                  const newCountries = { ...selectedCountries };
+                                  newCountries[countryCode] = ideo.id;
+                                  onIdeologyChange(newCountries);
+                                }}
+                                className={`
+                                  w-full px-3 py-2 rounded-lg text-xs font-bold transition-all duration-200
+                                  ${isSelected
+                                    ? `bg-gradient-to-r ${ideo.color} text-white shadow-lg scale-105 border-2`
+                                    : 'border hover:text-white'
+                                  }
+                                `}
+                                style={isSelected ? { borderColor: 'var(--color-primary)', boxShadow: '0 10px 15px -3px rgba(96, 165, 250, 0.3)' } : { backgroundColor: 'rgba(30, 41, 59, 0.5)', color: '#94a3b8', borderColor: 'var(--color-border)' }}
+                              >
+                                <div>{ideo.icon}</div>
+                                <div className="text-[10px] mt-1">{ideo.id}</div>
+                              </button>
+                              {hoveredIdeology === ideo.id && (
+                                <div className="absolute z-50 left-0 top-full mt-2 w-64 p-3 rounded-lg border text-xs shadow-2xl animate-fade-in"
+                                  style={{ backgroundColor: 'var(--color-bg-card)', borderColor: 'var(--color-primary)', color: 'var(--color-text)' }}>
+                                  <div className="font-bold mb-1" style={{ color: 'var(--color-primary)' }}>{ideo.icon} {ideo.id}</div>
+                                  <div className="text-[11px]" style={{ color: '#94a3b8' }}>{ideo.description}</div>
+                                </div>
+                              )}
+                            </div>
                           );
                         })}
                       </div>
@@ -454,6 +473,20 @@ const Sidebar = ({
                 <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
               </div>
             </div>
+
+            {/* Botón Completar Simulación */}
+            {currentMonth < 49 && onCompleteSimulation && (
+              <button
+                onClick={onCompleteSimulation}
+                className="w-full mt-4 font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg border"
+                style={{ background: 'linear-gradient(to right, #f59e0b, #d97706)', color: 'white', borderColor: '#f59e0b' }}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <span>⏩</span>
+                  <span>COMPLETAR SIMULACIÓN AHORA</span>
+                </span>
+              </button>
+            )}
           </div>
 
           {/* Selector de país para detalle */}
@@ -644,12 +677,77 @@ const Sidebar = ({
             )}
           </div>
 
-          {/* Mensaje de fin de simulación */}
-          {currentMonth === 49 && (
-            <div className="border rounded-lg p-6 text-center backdrop-blur-sm animate-pulse" style={{ background: 'linear-gradient(to right, rgba(52, 211, 153, 0.2), rgba(16, 185, 129, 0.2))', borderColor: '#34d399' }}>
-              <div className="text-6xl mb-3">🎉</div>
-              <div className="font-bold text-2xl mb-2" style={{ color: '#34d399' }}>SIMULACIÓN COMPLETADA</div>
-              <div className="text-sm" style={{ color: 'var(--color-text)' }}>Los 50 meses han finalizado exitosamente</div>
+          {/* Resumen Final - TOP 10 Países */}
+          {showFinalSummary && (
+            <div className="border rounded-lg p-6 backdrop-blur-sm" style={{ background: 'linear-gradient(to right, rgba(52, 211, 153, 0.2), rgba(16, 185, 129, 0.2))', borderColor: '#34d399' }}>
+              <div className="text-center mb-6">
+                <div className="text-6xl mb-3">🎉</div>
+                <div className="font-bold text-2xl mb-2" style={{ color: '#34d399' }}>SIMULACIÓN COMPLETADA</div>
+                <div className="text-sm mb-4" style={{ color: 'var(--color-text)' }}>Los 50 meses han finalizado exitosamente</div>
+              </div>
+
+              {/* TOP 10 Crecimiento */}
+              <div className="border-t pt-4" style={{ borderColor: '#34d399' }}>
+                <h3 className="font-bold text-lg mb-4 text-center" style={{ color: '#34d399' }}>
+                  🏆 TOP 10 - MAYOR CRECIMIENTO DE PIB
+                </h3>
+                <div className="space-y-2">
+                  {Object.keys(simulationData)
+                    .map(code => {
+                      const finalData = simulationData[code].proyeccion[49];
+                      const initialPIB = simulationData[code].pib_inicial;
+                      const finalPIB = finalData.PIB;
+                      const growth = ((finalPIB - initialPIB) / initialPIB) * 100;
+                      return {
+                        code,
+                        name: code,
+                        ideology: simulationData[code].ideologia,
+                        growth,
+                        finalPIB
+                      };
+                    })
+                    .sort((a, b) => b.growth - a.growth)
+                    .slice(0, 10)
+                    .map((country, index) => (
+                      <div
+                        key={country.code}
+                        className="flex items-center justify-between p-3 rounded-lg border"
+                        style={{
+                          backgroundColor: index === 0 ? 'rgba(251, 191, 36, 0.2)' : 'rgba(30, 41, 59, 0.5)',
+                          borderColor: index === 0 ? '#fbbf24' : 'var(--color-border)'
+                        }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="font-bold text-2xl" style={{ color: index === 0 ? '#fbbf24' : '#60a5fa', minWidth: '30px' }}>
+                            {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
+                          </div>
+                          <div>
+                            <div className="font-bold text-white">{country.name}</div>
+                            <div className="text-xs" style={{ color: '#94a3b8' }}>{country.ideology}</div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-bold text-lg" style={{ color: country.growth >= 0 ? '#34d399' : '#ef4444' }}>
+                            {country.growth >= 0 ? '+' : ''}{country.growth.toFixed(1)}%
+                          </div>
+                          <div className="text-xs" style={{ color: '#60a5fa' }}>
+                            ${country.finalPIB.toFixed(0)}B
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  }
+                </div>
+
+                {/* Botón cerrar */}
+                <button
+                  onClick={() => setShowFinalSummary(false)}
+                  className="w-full mt-4 py-2 rounded-lg font-bold transition-all duration-200 hover:scale-105"
+                  style={{ backgroundColor: '#34d399', color: 'white' }}
+                >
+                  CERRAR RESUMEN
+                </button>
+              </div>
             </div>
           )}
         </div>

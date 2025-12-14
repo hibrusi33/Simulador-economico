@@ -165,6 +165,15 @@ function App() {
     }
   }, [gamePhase, simulationData, currentMonth]);
 
+  // Completar simulación inmediatamente
+  const completeSimulation = () => {
+    if (simulationInterval.current) {
+      clearInterval(simulationInterval.current);
+    }
+    setCurrentMonth(49);
+    updateCurrentMonthData(simulationData, 49);
+  };
+
   // Reiniciar simulación
   const resetSimulation = () => {
     setGamePhase('setup');
@@ -215,6 +224,7 @@ function App() {
             currentMonth={currentMonth}
             selectedCountryForDetail={selectedCountryForDetail}
             onSelectCountryForDetail={setSelectedCountryForDetail}
+            onCompleteSimulation={completeSimulation}
           />
         </div>
 
