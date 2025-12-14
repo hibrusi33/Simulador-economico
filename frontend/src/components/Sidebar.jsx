@@ -426,48 +426,60 @@ const Sidebar = ({
           {/* Gráficas */}
           <div className="border rounded-lg p-5 backdrop-blur-sm" style={{ backgroundColor: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}>
             
-            {/* Gráfica Comparativa (sin país seleccionado) */}
-            {!selectedCountryForDetail && (
-              <div>
-                <h3 className="font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
-                  <span>📈</span>
-                  <span>COMPARATIVA MUNDIAL - PIB</span>
-                </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={prepareComparativeData()}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis 
-                      dataKey="mes" 
-                      stroke="#64748b"
-                      style={{ fontSize: '12px' }}
-                      label={{ value: 'Mes', position: 'insideBottom', offset: -5, fill: '#64748b' }}
-                    />
-                    <YAxis 
-                      stroke="#64748b"
-                      style={{ fontSize: '12px' }}
-                      label={{ value: 'PIB (Miles de Millones)', angle: -90, position: 'insideLeft', fill: '#64748b' }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend 
-                      wrapperStyle={{ fontSize: '11px' }}
-                      iconType="line"
-                    />
-                    {Object.keys(simulationData || {}).map(countryCode => (
-                      <Line
-                        key={countryCode}
-                        type="monotone"
-                        dataKey={countryCode}
-                        name={simulationData[countryCode].nombre}
-                        stroke={countryColors[countryCode] || '#60a5fa'}
-                        strokeWidth={2}
-                        dot={false}
-                        activeDot={{ r: 6 }}
+            {/* Gráfica Comparativa (sin país seleccionado) - TOP 10 PAÍSES */}
+            {!selectedCountryForDetail && (() => {
+              // Calcular TOP 10 países por PIB actual (mes corriente)
+              const top10Countries = Object.keys(simulationData || {})
+                .map(code => ({
+                  code,
+                  pib: simulationData[code].proyeccion[currentMonth]?.PIB || 0
+                }))
+                .sort((a, b) => b.pib - a.pib)
+                .slice(0, 10)
+                .map(item => item.code);
+
+              return (
+                <div>
+                  <h3 className="font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--color-primary)' }}>
+                    <span>📈</span>
+                    <span>TOP 10 ECONOMÍAS - PIB</span>
+                  </h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={prepareComparativeData()}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                      <XAxis
+                        dataKey="mes"
+                        stroke="#64748b"
+                        style={{ fontSize: '12px' }}
+                        label={{ value: 'Mes', position: 'insideBottom', offset: -5, fill: '#64748b' }}
                       />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+                      <YAxis
+                        stroke="#64748b"
+                        style={{ fontSize: '12px' }}
+                        label={{ value: 'PIB (Miles de Millones)', angle: -90, position: 'insideLeft', fill: '#64748b' }}
+                      />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend
+                        wrapperStyle={{ fontSize: '10px', maxHeight: '80px', overflowY: 'auto' }}
+                        iconType="line"
+                      />
+                      {top10Countries.map(countryCode => (
+                        <Line
+                          key={countryCode}
+                          type="monotone"
+                          dataKey={countryCode}
+                          name={simulationData[countryCode].nombre}
+                          stroke={countryColors[countryCode] || '#60a5fa'}
+                          strokeWidth={2}
+                          dot={false}
+                          activeDot={{ r: 6 }}
+                        />
+                      ))}
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              );
+            })()}
 
             {/* Gráfica Detallada (país seleccionado) */}
             {selectedCountryForDetail && simulationData[selectedCountryForDetail] && (

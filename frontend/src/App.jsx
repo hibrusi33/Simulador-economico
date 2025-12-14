@@ -18,8 +18,13 @@ function App() {
 
   // Manejar selección de país desde el globo
   const handleSelectCountry = (countryCode, countryName) => {
-    if (gamePhase === 'running') return; // No permitir cambios durante simulación
+    // Durante la simulación: seleccionar país para análisis detallado
+    if (gamePhase === 'running') {
+      setSelectedCountryForDetail(countryCode);
+      return;
+    }
 
+    // Durante setup: añadir/quitar de lista de países a simular
     // Si ya está seleccionado, removerlo
     if (selectedCountries[countryCode]) {
       const newSelected = { ...selectedCountries };
@@ -55,8 +60,19 @@ function App() {
       const paisesResponse = await fetch('http://localhost:8000/paises');
       const todosLosPaises = await paisesResponse.json();
 
-      // Ideologías disponibles para asignar aleatoriamente
-      const ideologias = ['comunismo', 'capitalismo', 'socialdemocracia'];
+      // Ideologías disponibles para asignar aleatoriamente (TODAS las 10 disponibles)
+      const ideologias = [
+        'Capitalismo',
+        'Capitalismo Neoliberal',
+        'Comunismo',
+        'Socialismo',
+        'Socialismo Democrático',
+        'Teocracia',
+        'Autoritarismo',
+        'Tecnocracia',
+        'Anarcocapitalismo',
+        'Socialdemocracia'
+      ];
 
       // Crear configuración completa: países seleccionados + países no seleccionados con ideología aleatoria
       const configuracionCompleta = { ...selectedCountries };
