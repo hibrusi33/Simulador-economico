@@ -1,7 +1,7 @@
 // GlobeSelector.jsx
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Globe from 'react-globe.gl';
-import * as d3 from 'd3-scale-chromatic';
+import { interpolateRgb } from 'd3-interpolate';
 
 const GlobeSelector = ({ 
   onSelectCountry, 
@@ -49,12 +49,6 @@ const GlobeSelector = ({
     }
   }, [currentMonthData, countries.features]);
 
-  // Generar key único basado en currentMonthData para forzar re-render del Globe
-  const globeKey = useMemo(() => {
-    return Object.keys(currentMonthData).length > 0
-      ? `globe-${Date.now()}-${Object.keys(currentMonthData).length}`
-      : 'globe-initial';
-  }, [currentMonthData]);
 
   // Mapeo de códigos ISO a códigos de backend
   const isoToBackendCode = {
@@ -240,11 +234,11 @@ const GlobeSelector = ({
       if (bienestar < 50) {
         // Rojo suave a Amarillo suave
         const t = bienestar / 50;
-        return d3.interpolateRgb('#ef4444', '#fbbf24')(t);
+        return interpolateRgb('#ef4444', '#fbbf24')(t);
       } else {
         // Amarillo suave a Verde menta
         const t = (bienestar - 50) / 50;
-        return d3.interpolateRgb('#fbbf24', '#34d399')(t);
+        return interpolateRgb('#fbbf24', '#34d399')(t);
       }
     }
 
@@ -335,7 +329,6 @@ const GlobeSelector = ({
   return (
     <div className="relative w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
       <Globe
-        key={globeKey}
         ref={globeEl}
 
         // Datos
