@@ -251,7 +251,7 @@ const GlobeSelector = ({
     return isoToBackendCode[isoCode] || null;
   }, []);
 
-  // Calcular altitud basada en PIB - MEMOIZADA
+  // Calcular altitud basada en PIB - MEMOIZADA (permite negativos)
   const getPolygonAltitude = useCallback((d) => {
     const countryCode = getCountryCode(d.properties.ISO_A3);
 
@@ -263,18 +263,20 @@ const GlobeSelector = ({
     const pibActual = data.PIB || 1000;
     const pibInicial = data.pib_inicial || 1000;
 
-    // Altura base cuando PIB = PIB inicial
-    const alturaBase = 0.02;
+    // Altura base cuando PIB = PIB inicial (0 = nivel del mar)
+    const alturaBase = 0.0;
 
     // Calcular cambio relativo (diferencia porcentual desde PIB inicial)
     const cambioRelativo = (pibActual - pibInicial) / pibInicial;
 
     // MULTIPLICADOR ALTO: hace que los cambios sean MUY visibles
-    // ±10% PIB = ±0.05 altura, ±50% PIB = ±0.25 altura
+    // +50% PIB = +0.25 altura (sale del globo)
+    // -50% PIB = -0.25 altura (se hunde en el globo)
     const deltaAltura = cambioRelativo * 0.50;
 
-    // Altura final: base + cambio (limitado entre 0.001 y 0.35)
-    const altitude = Math.max(0.001, Math.min(0.35, alturaBase + deltaAltura));
+    // Altura final: permite NEGATIVOS para hundirse
+    // Límites: -0.15 (hundido) a +0.35 (muy alto)
+    const altitude = Math.max(-0.15, Math.min(0.35, alturaBase + deltaAltura));
 
     return altitude;
   }, [currentMonthData, getCountryCode]);
